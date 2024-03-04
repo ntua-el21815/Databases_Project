@@ -70,14 +70,14 @@ INSERT INTO actor(actor_id,first_name,last_name) VALUES(NULL,'Maria','Menounos')
 INSERT INTO actor(actor_id,first_name,last_name) VALUES(300,'Maria','Menounos');
 
 UPDATE actor
-SET first_name = 'ZACH', last_name = upper('Galifianakis')
-WHERE actor_id = 201;
+	SET first_name = 'ZACH', last_name = upper('Galifianakis')
+	WHERE actor_id = 201;
 
 DELETE FROM actor WHERE actor_id = 300;
 
 UPDATE actor
-SET first_name = upper(first_name), last_name = upper(last_name)
-WHERE actor_id = 202;
+	SET first_name = upper(first_name), last_name = upper(last_name)
+	WHERE actor_id = 202;
 
 INSERT INTO actor (actor_id, first_name, last_name) VALUES (1, 'Irene', 'Papas'); #Error Duplicate Primary
 
@@ -89,5 +89,85 @@ DESC customer;
 
 SELECT * FROM customer WHERE customer_id = 1;
 
-update customer set create_date = str_to_date("Aug 10 2017", "%b %d %Y")
-WHERE customer.customer_id = 1; #Be sure to always check how to format dates for your specific RDBMS.
+UPDATE customer 
+	SET create_date = str_to_date("Aug 10 2017", "%b %d %Y")
+	WHERE customer.customer_id = 1; #Be sure to always check how to format dates for your specific RDBMS.
+
+#From here on Lab Exercises
+
+USE sakila;
+
+#1st Exercise
+
+SELECT * FROM actor WHERE first_name = 'EMILY';
+
+UPDATE actor
+	SET last_name = 'TEMPLE'
+	WHERE actor_id = 148;
+
+#2nd Exercise 
+
+SHOW CREATE TABLE sakila.actor;
+
+#3rd Exercise 
+
+DESC actor;
+
+ALTER TABLE actor
+	ADD middle_name VARCHAR(45) AFTER first_name; #I have no reason to think that the max length of middle name should be different from that of first or last name.
+
+#4th Exercise
+
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE actor
+	SET middle_name = 'Jonathan'; #Very funny
+
+UPDATE actor
+	SET middle_name = upper('Jonathan'); #Very funny
+
+SET SQL_SAFE_UPDATES = 1; #Good safety feature Honestly
+
+#5th Exercise
+
+ALTER TABLE actor
+	DROP COLUMN middle_name; 
+
+#6th Exercise
+
+CREATE TABLE boss_records(
+	number_of_actors INT,
+    number_of_customers INT,
+    number_of_rentals INT
+);
+
+INSERT INTO boss_records
+	SELECT 
+		(SELECT COUNT(*) FROM actor),
+		(SELECT COUNT(*) FROM customer),
+		(SELECT COUNT(*) FROM rental)
+;
+SELECT * FROM boss_records;
+    
+#7th Exercise 
+
+USE test1;
+
+CREATE TABLE users (
+	ΑΡ_ΤΑΥΤ CHAR(7),
+    ΕΠΩΝΥΜΟ VARCHAR(255),
+    ΟΝΟΜΑ VARCHAR(255),
+    ΗΜ_ΓΕΝΝΗΣΗΣ DATE
+);
+
+ALTER TABLE users
+	ADD CONSTRAINT pk_id PRIMARY KEY (ΑΡ_ΤΑΥΤ);
+    
+INSERT INTO users VALUES ('Π702538','ΚΑΛΛΙΓΕΡΟΣ', 'ΔΗΜΗΤΡΗΣ', '1985-11-10');
+INSERT INTO users VALUES('Χ234678', 'ΣΕΜΠΟΣ','ΒΑΣΙΛΗΣ' ,'1976-1-1');
+INSERT INTO users VALUES('Χ297200','ΜΙΧΑΣ' ,'ΑΓΓΕΛΟΣ' ,'1981-3-25');
+
+SELECT * FROM users;
+
+
+	
