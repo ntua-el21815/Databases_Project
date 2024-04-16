@@ -148,8 +148,6 @@ INSERT INTO boss_records
 		(SELECT COUNT(*) FROM rental)
 ;
 SELECT * FROM boss_records;
-    
-#7th Exercise 
 
 USE test1;
 
