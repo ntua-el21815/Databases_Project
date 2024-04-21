@@ -81,7 +81,7 @@ UPDATE actor
 
 INSERT INTO actor (actor_id, first_name, last_name) VALUES (1, 'Irene', 'Papas'); #Error Duplicate Primary
 
-INSERT INTO film_actor (actor_id, film_id) VALUES (201, 1050);#Error Foreign Key doesn't exist
+INSERT INTO film_actor (actor_id, film_id) VALUES (201, 1050); /*Error Foreign Key doesn't exist*/
 
 UPDATE film SET length = -1 WHERE film_id = 1;#Error,Violation of constraint
 
@@ -93,11 +93,11 @@ UPDATE customer
 	SET create_date = str_to_date("Aug 10 2017", "%b %d %Y")
 	WHERE customer.customer_id = 1; #Be sure to always check how to format dates for your specific RDBMS.
 
-#From here on Lab Exercises
+/*From here on Lab Exercises*/
 
 USE sakila;
 
-#1st Exercise
+/*1st Exercise*/
 
 SELECT * FROM actor WHERE first_name = 'EMILY';
 
@@ -105,18 +105,18 @@ UPDATE actor
 	SET last_name = 'TEMPLE'
 	WHERE actor_id = 148;
 
-#2nd Exercise 
+/*2nd Exercise */
 
 SHOW CREATE TABLE sakila.actor;
 
-#3rd Exercise 
+/*3rd Exercise */ 
 
 DESC actor;
 
 ALTER TABLE actor
 	ADD middle_name VARCHAR(45) AFTER first_name; #I have no reason to think that the max length of middle name should be different from that of first or last name.
 
-#4th Exercise
+/* 4th Exercise */
 
 SET SQL_SAFE_UPDATES = 0;
 
@@ -128,12 +128,12 @@ UPDATE actor
 
 SET SQL_SAFE_UPDATES = 1; #Good safety feature Honestly
 
-#5th Exercise
+/* 5th Exercise */
 
 ALTER TABLE actor
 	DROP COLUMN middle_name; 
 
-#6th Exercise
+/* 6th Exercise */
 
 CREATE TABLE boss_records(
 	number_of_actors INT,

@@ -1,16 +1,24 @@
 
-CREATE DATABASE CookingContest;
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+
+DROP SCHEMA IF EXISTS CookingContest;
+
+CREATE SCHEMA CookingContest;
 
 USE CookingContest;
 
 CREATE TABLE Images (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    image BLOB NOT NULL
+    image BLOB NOT NULL,
+    descr TEXT
 );
 
 CREATE TABLE Cuisines (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(45) NOT NULL,
+    country_name VARCHAR(45) NOT NULL,
     image_id INT,
     FOREIGN KEY (image_id) REFERENCES Images(id)
 );
@@ -18,9 +26,13 @@ CREATE TABLE Cuisines (
 CREATE TABLE Recipes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
-    short_desc TEXT NOT NULL,
-    recipe_type ENUM("Ζαχαροπλαστική","Μαγειρική"), /* Only two types possible */
+    short_desc TEXT,
+    recipe_type ENUM("pastry","gastronomy"), /* Only two types possible */
     difficulty_level TINYINT NOT NULL,
+    /* Every recipe can have up to 3 tips.*/
+    TIP1 TINYTEXT,
+    TIP2 TINYTEXT,
+    TIP3 TINYTEXT,
     /* Consraint for the difficulty level: 
     1 - very easy , 2 - easy, 3 - medium, 4 - hard, 5 - very hard
     */
@@ -40,20 +52,26 @@ CREATE TABLE Chefs (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     surname VARCHAR(255) NOT NULL,
+    /* VARCHAR was chosen to accomodate foriegn numbers 0049 ...*/
     phone_number VARCHAR(15),
+    CONSTRAINT chk_phone_number CHECK (phone_number REGEXP '^[0-9]{0,15}$'),
     birth_date DATE NOT NULL,
     /* You must have been born and not be dead to participate. */
     CONSTRAINT chk_birth_date CHECK (birth_date <= CURDATE() AND birth_date >= '1900-01-01'),
     /* Age should be returned at the time of query based on birth date. */
-    work_experience TINYINT NOT NULL,
-    prof_certification VARCHAR(255)
+    work_experience TINYINT,
+    prof_certification VARCHAR(255) DEFAULT NULL
 );
 
 CREATE TABLE Episodes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     episode_number INT NOT NULL,
+    CONSTRAINT chk_episode_number CHECK (episode_number > 0),
+    /*The winner should be dynamically calculated based on the ratings and other criteria.
+      Remember to implement the logic in the application.
+    */
     winner_id INT NOT NULL,
-    year YEAR NOT NULL,
+    year_played YEAR NOT NULL,
     image_id INT,
     FOREIGN KEY (winner_id) REFERENCES Chefs(id),
     FOREIGN KEY (image_id) REFERENCES Images(id)
@@ -69,7 +87,7 @@ CREATE TABLE Themes (
 
 CREATE TABLE FoodGroups (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(45) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     descr TEXT NOT NULL,
     image_id INT,
     FOREIGN KEY (image_id) REFERENCES Images(id)
@@ -78,8 +96,9 @@ CREATE TABLE FoodGroups (
 CREATE TABLE Ingredients (
     id INT PRIMARY KEY AUTO_INCREMENT,
     food_group_id INT NOT NULL,
-    name VARCHAR(45) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     calories_per_100_units INT NOT NULL,
+    CONSTRAINT chk_calories CHECK (calories_per_100_units >= 0),
     image_id INT,
     FOREIGN KEY (image_id) REFERENCES Images(id),
     FOREIGN KEY (food_group_id) REFERENCES FoodGroups(id)
@@ -127,19 +146,21 @@ DELIMITER ;
 CREATE TABLE DietaryInfo (
     id INT PRIMARY KEY AUTO_INCREMENT,
     recipe_id INT NOT NULL,
-    fat_content DECIMAL(5, 2) NOT NULL,
-    protein_content DECIMAL(5, 2) NOT NULL,
-    hydrocarbon_content DECIMAL(5, 2) NOT NULL,
-    calories DECIMAL(2,5)
-    /* Calories are calculated by the stored function calculate_calories */
-    GENERATED ALWAYS AS (calculate_calories(recipe_id)) VIRTUAL,
-    FOREIGN KEY (recipe_id) REFERENCES Recipes(id)
+    fat_content INT NOT NULL,
+    protein_content INT NOT NULL,
+    hydrocarbon_content INT NOT NULL,
+    calories DECIMAL(5, 2),
+    FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
+    CONSTRAINT chk_fat_content CHECK (fat_content >= 0),
+    CONSTRAINT chk_protein_content CHECK (protein_content >= 0),
+    CONSTRAINT chk_hydrocarbon_content CHECK (hydrocarbon_content >= 0)
 );
 
 CREATE TABLE Steps (
     id INT PRIMARY KEY AUTO_INCREMENT,
     recipe_id INT,
     step_number TINYINT NOT NULL,
+    CONSTRAINT chk_step_number CHECK (step_number > 0),
     CHECK (step_number > 0),
     step_desc TEXT NOT NULL,
     image_id INT,
@@ -160,13 +181,16 @@ CREATE TABLE Quantities (
 
 CREATE TABLE Tags (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    tag_name VARCHAR(45) NOT NULL
+    /* We expect tags to be short*/
+    tag_name VARCHAR(45) NOT NULL UNIQUE
+    
 );
 
 CREATE TABLE episode_cuisines (
     id INT PRIMARY KEY AUTO_INCREMENT,
     episode_id INT NOT NULL,
     cuisine_id INT NOT NULL,
+    CONSTRAINT cuisine_chosen_once UNIQUE (episode_id, cuisine_id),
     FOREIGN KEY (episode_id) REFERENCES Episodes(id),
     FOREIGN KEY (cuisine_id) REFERENCES Cuisines(id)
 );
@@ -199,6 +223,7 @@ CREATE TABLE episode_recipes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     episode_id INT NOT NULL,
     recipe_id INT NOT NULL,
+    CONSTRAINT recipe_chosen_once UNIQUE (episode_id, recipe_id),
     FOREIGN KEY (episode_id) REFERENCES Episodes(id),
     FOREIGN KEY (recipe_id) REFERENCES Recipes(id)
 );
@@ -207,9 +232,9 @@ CREATE TABLE requires (
     id INT PRIMARY KEY AUTO_INCREMENT,
     recipe_id INT NOT NULL,
     ingredient_id INT NOT NULL,
-    quantity DECIMAL(5, 2) NOT NULL,
-    main_ingredient BOOLEAN NOT NULL,
-    ingr_type VARCHAR(45) NOT NULL,
+    quantity VARCHAR(255) NOT NULL,
+    main_ingredient BOOLEAN,
+    ingr_type VARCHAR(45),
     FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
     FOREIGN KEY (ingredient_id) REFERENCES Ingredients(id)
 );
@@ -226,6 +251,8 @@ CREATE TABLE specialises_in (
     id INT PRIMARY KEY AUTO_INCREMENT,
     chef_id INT NOT NULL,
     cuisine_id INT NOT NULL,
+    /* A chef can't specialise in the same cuisine twice */
+    CONSTRAINT chk_specialisation UNIQUE (chef_id, cuisine_id),
     FOREIGN KEY (chef_id) REFERENCES Chefs(id),
     FOREIGN KEY (cuisine_id) REFERENCES Cuisines(id)
 );
@@ -238,6 +265,8 @@ CREATE TABLE rates (
     score TINYINT NOT NULL,
     /* Score must be between 1 and 5 */
     CONSTRAINT chk_score CHECK (score BETWEEN 1 AND 5),
+    /* A judge can't rate the same contestant twice */
+    CONSTRAINT chk_unique_rating UNIQUE (judge_id, contestant_id),
     FOREIGN KEY (episode_id) REFERENCES Episodes(id),
     FOREIGN KEY (judge_id) REFERENCES Chefs(id),
     FOREIGN KEY (contestant_id) REFERENCES Chefs(id)
@@ -248,8 +277,8 @@ CREATE TABLE chefs_recipes_episode (
     episode_id INT NOT NULL,
     chef_id INT NOT NULL,
     recipe_id INT NOT NULL,
-    /* A chef can't participate in the same episode twice */
-    CONSTRAINT chk_chef UNIQUE (chef_id, episode_id),
+    /* The triplet (episode_id, chef_id, recipe_id) must be unique */
+    CONSTRAINT chk_unique_participation UNIQUE (episode_id, chef_id, recipe_id),
     /* A chef must not participate in three consecutive episodes */
     CONSTRAINT chk_consecutive_episodes CHECK ( 
         (SELECT COUNT(*) FROM chefs_recipes_episode
@@ -286,3 +315,15 @@ CREATE TABLE is_judge (
     FOREIGN KEY (judge_id) REFERENCES Chefs(id),
     FOREIGN KEY (episode_id) REFERENCES Episodes(id)
 );
+
+/*
+DELIMITER //
+
+CREATE TRIGGER `CalculateCalories` BEFORE INSERT ON `DietaryInfo`
+FOR EACH ROW
+BEGIN
+    SET NEW.calories = calculate_calories(NEW.recipe_id);
+END //
+
+DELIMITER ;
+*/
