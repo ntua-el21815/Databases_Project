@@ -60,8 +60,32 @@ CREATE TABLE Chefs (
     CONSTRAINT chk_birth_date CHECK (birth_date <= CURDATE() AND birth_date >= '1900-01-01'),
     /* Age should be returned at the time of query based on birth date. */
     work_experience TINYINT,
-    prof_certification VARCHAR(255) DEFAULT NULL
+    prof_certification INT DEFAULT NULL,
+    CONSTRAINT chk_work_experience CHECK (work_experience >= 0),
+    CONSTRAINT chk_prof_certification CHECK (prof_certification BETWEEN 0 AND 5 AND NOT NULL)
 );
+
+/* Function that takes the number of prof_certification and returns the corresponding title */
+DELIMITER //
+
+CREATE FUNCTION get_title(prof_certification INT) RETURNS VARCHAR(45)
+DETERMINISTIC
+BEGIN
+    DECLARE title VARCHAR(45);
+
+    CASE prof_certification
+        WHEN 0 THEN SET title = 'None';
+        WHEN 1 THEN SET title = 'C Cook';
+        WHEN 2 THEN SET title = 'B Cook';
+        WHEN 3 THEN SET title = 'A Cook';
+        WHEN 4 THEN SET title = 'Sous Chef';
+        WHEN 5 THEN SET title = 'Chef';
+    END CASE;
+
+    RETURN title;
+END //
+
+DELIMITER ;
 
 CREATE TABLE Episodes (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -70,9 +94,10 @@ CREATE TABLE Episodes (
     /*The winner should be dynamically calculated based on the ratings and other criteria.
       Remember to implement the logic in the application.
     */
-    winner_id INT NOT NULL,
+    winner_id INT,
     year_played YEAR NOT NULL,
     image_id INT,
+    CONSTRAINT CHECK (year_played BETWEEN 2015 AND 2025), /* Change this ASAP 2025 to current year.*/
     FOREIGN KEY (winner_id) REFERENCES Chefs(id),
     FOREIGN KEY (image_id) REFERENCES Images(id)
 );
@@ -123,16 +148,16 @@ CREATE TABLE Meals (
 
 DELIMITER //
 
-CREATE FUNCTION calculate_calories(recipe_id INT) RETURNS DECIMAL(5, 2)
+CREATE FUNCTION calculate_calories(recipe_id INT) RETURNS INT
 DETERMINISTIC
 BEGIN
     /* The function calculates the total calories of a recipe 
     by summing the calories of each ingredient multiplied 
     by the quantity of the ingredient in the recipe */
 
-    DECLARE total_calories DECIMAL(5, 2);
+    DECLARE total_calories INT;
 
-    SELECT SUM(Ingredients.calories_per_100_units * requires.quantity) INTO total_calories
+    SELECT SUM(Ingredients.calories_per_100_units * requires.num_units) INTO total_calories
     FROM requires
     JOIN Ingredients ON requires.ingredient_id = Ingredients.id
     WHERE requires.recipe_id = recipe_id;
@@ -149,7 +174,7 @@ CREATE TABLE DietaryInfo (
     fat_content INT NOT NULL,
     protein_content INT NOT NULL,
     hydrocarbon_content INT NOT NULL,
-    calories DECIMAL(5, 2),
+    calories INT,
     FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
     CONSTRAINT chk_fat_content CHECK (fat_content >= 0),
     CONSTRAINT chk_protein_content CHECK (protein_content >= 0),
@@ -174,7 +199,7 @@ CREATE TABLE Steps (
 CREATE TABLE Quantities (
     id INT PRIMARY KEY AUTO_INCREMENT,
     recipe_id INT NOT NULL,
-    quantity DECIMAL(5, 2) NOT NULL,
+    quantity INT NOT NULL,
     CONSTRAINT pos_quantity CHECK (quantity > 0),
     FOREIGN KEY (recipe_id) REFERENCES Recipes(id)
 );
@@ -233,6 +258,7 @@ CREATE TABLE requires (
     recipe_id INT NOT NULL,
     ingredient_id INT NOT NULL,
     quantity VARCHAR(255) NOT NULL,
+    num_units INT NOT NULL,
     main_ingredient BOOLEAN,
     ingr_type VARCHAR(45),
     FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
@@ -266,7 +292,7 @@ CREATE TABLE rates (
     /* Score must be between 1 and 5 */
     CONSTRAINT chk_score CHECK (score BETWEEN 1 AND 5),
     /* A judge can't rate the same contestant twice */
-    CONSTRAINT chk_unique_rating UNIQUE (judge_id, contestant_id),
+    CONSTRAINT chk_unique_rating UNIQUE (episode_id,judge_id, contestant_id),
     FOREIGN KEY (episode_id) REFERENCES Episodes(id),
     FOREIGN KEY (judge_id) REFERENCES Chefs(id),
     FOREIGN KEY (contestant_id) REFERENCES Chefs(id)
@@ -316,7 +342,6 @@ CREATE TABLE is_judge (
     FOREIGN KEY (episode_id) REFERENCES Episodes(id)
 );
 
-/*
 DELIMITER //
 
 CREATE TRIGGER `CalculateCalories` BEFORE INSERT ON `DietaryInfo`
@@ -326,4 +351,5 @@ BEGIN
 END //
 
 DELIMITER ;
-*/
+
+DELIMITER //

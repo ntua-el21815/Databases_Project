@@ -13,6 +13,8 @@
       "image": "https://example.com/spaghetti_carbonara.jpg",
       "theme": "Italian Classics",
       "meal_types": ["Dinner"],
+      "tags" : ["quick-lunch" , "easy-dinner" , "pasta-time"],
+      "main_ingredient" : "Spaghetti",
       "ingredients": [
         ["Spaghetti", "Wheat and grains", 371, "400g"],
         ["Pancetta", "Meat", 417, "150g"],
@@ -50,6 +52,8 @@
       "image": "https://example.com/croissant.jpg",
       "theme": "French Breakfast",
       "meal_types": ["Breakfast"],
+      "tags" : ["french-breakfast" , "buttery-pastry" , "flaky-croissant" , "nice-breakfast"],
+      "main_ingredient" : "Butter",
       "ingredients": [
         ["All-Purpose Flour", "Wheat and grains", 364, "500g"],
         ["Butter", "Dairy products", 717, "250g"],
@@ -89,6 +93,8 @@
         "image": "https://example.com/chocolate_chip_cookies.jpg",
         "theme": "Classic Desserts",
         "meal_types": ["Dessert", "Snack"],
+        "tags" : ["classis-dessert" , "snack-time" , "nice-breakfast", "chocolate-lover"],
+        "main_ingredient" : "Butter",
         "ingredients": [
         ["All-Purpose Flour", "Wheat and grains", 364, "250g"],
         ["Butter", "Dairy products", 717, "150g"],
@@ -133,6 +139,8 @@
         "image": "https://example.com/chicken_tikka_masala.jpg",
         "theme": "Indian Classics",
         "meal_types": ["Dinner"],
+        "tags" : ["spicy-food", "chicken-lover", "creamy-sauce"],
+        "main_ingredient" : "Chicken Breast",
         "ingredients": [
         ["Chicken Breast", "Chicken", 165, "500g"],
         ["Greek Yogurt", "Dairy products", 59, "150g"],
@@ -176,6 +184,8 @@
         "image": "https://example.com/apple_pie.jpg",
         "theme": "Homemade Treats",
         "meal_types": ["Dessert"],
+        "tags" : ["nice-breakfast", "sweet-tooth", "apple-lover"],
+        "main_ingredient" : "Apples",
         "ingredients": [
         ["Apples", "Fruit", 52, "6"],
         ["Granulated Sugar", "N/A", 387, "150g"],
@@ -222,6 +232,8 @@
         "image": "https://example.com/tiramisu.jpg",
         "theme": "Decadent Desserts",
         "meal_types": ["Dessert"],
+        "tags" : ["cold-dessert", "sweet-tooth"],
+        "main_ingredient" : "Ladyfingers",
         "ingredients": [
         ["Ladyfingers", "Wheat and grains", 383, "200g"],
         ["Strong Brewed Coffee", "N/A", 0, "1 cup"],
@@ -269,6 +281,8 @@
         "image": "https://example.com/sushi_rolls.jpg",
         "theme": "Japanese Delicacies",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["japanese-food", "sushi-lover", "seafood"],
+        "main_ingredient" : "Nori Sheets",
         "ingredients": [
         ["Sushi Rice", "Wheat and grains", 130, "2 cups"],
         ["Nori Sheets", "Seafood", 350, "5 sheets"],
@@ -314,6 +328,8 @@
         "image": "https://example.com/gazpacho.jpg",
         "theme": "Summer Eats",
         "meal_types": ["Appetizer", "Soup"],
+        "tags" : ["quick-lunch", "cold-soup", "refreshing"],
+        "main_ingredient" : "Ripe Tomatoes",
         "ingredients": [
         ["Ripe Tomatoes", "Vegetables", 18, "1kg"],
         ["Cucumber", "Vegetables", 16, "1"],
@@ -357,6 +373,8 @@
         "image": "https://example.com/beef_stroganoff.jpg",
         "theme": "Hearty Classics",
         "meal_types": ["Dinner"],
+        "tags" : ["comfort-food", "beef-lover", "creamy-sauce"],
+        "main_ingredient" : "Beef Sirloin",
         "ingredients": [
         ["Beef Sirloin", "Beef", 250, "500g"],
         ["Onion", "Vegetables", 40, "1"],
@@ -404,6 +422,8 @@
         "image": "https://example.com/quiche_lorraine.jpg",
         "theme": "Brunch Favorites",
         "meal_types": ["Brunch", "Lunch"],
+        "tags" : ["french-dessert", "savory-pastry", "brunch-time"],
+        "main_ingredient" : "Gruyère Cheese",
         "ingredients": [
         ["Pie Crust", "Wheat and grains", 488, "1"],
         ["Bacon", "Meat", 541, "150g"],
@@ -448,6 +468,8 @@
         "image": "https://example.com/mango_sticky_rice.jpg",
         "theme": "Exotic Desserts",
         "meal_types": ["Dessert"],
+        "tags" : ["thai-dessert", "mango-lover", "coconut-cream"],
+        "main_ingredient" : "Glutinous Rice",
         "ingredients": [
         ["Glutinous Rice", "Wheat and grains", 130, "2 cups"],
         ["Coconut Milk", "Nuts", 230, "1 cup"],
@@ -487,6 +509,8 @@
         "image": "https://example.com/pad_thai.jpg",
         "theme": "Asian Delights",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["thai-food", "noodle-dish", "peanut-lover"],
+        "main_ingredient" : "Shrimp",
         "ingredients": [
         ["Rice Noodles", "Wheat and grains", 192, "200g"],
         ["Shrimp", "Seafood", 99, "200g"],
@@ -534,10 +558,12 @@
         "TIP3": "Serve with crusty bread or over pasta for a complete meal.",
         "prep_time": "10 minutes",
         "cook_time": "10 minutes",
-        "cuisine": "Seafood",
+        "cuisine": "Portuguese",
         "image": "https://example.com/lemon_garlic_shrimp.jpg",
         "theme": "Seafood Sensations",
-        "meal_types": ["Dinner"],
+        "meal_types": ["Dinner", "Lunch"],
+        "tags" : ["seafood", "quick-dinner", "quick-lunch"],
+        "main_ingredient" : "Shrimp",
         "ingredients": [
         ["Shrimp", "Seafood", 99, "500g"],
         ["Butter", "Dairy products", 717, "4 tbsp"],
@@ -579,6 +605,8 @@
         "image": "https://example.com/vegetable_stir_fry.jpg",
         "theme": "Quick and Healthy",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["quick-lunch", "quick-dinner", "vegetarian"],
+        "main_ingredient" : "Broccoli",
         "ingredients": [
         ["Broccoli", "Vegetables", 34, "1 head"],
         ["Bell Peppers", "Vegetables", 31, "2"],
@@ -629,6 +657,8 @@
         "image": "https://example.com/beef_tacos.jpg",
         "theme": "Fiesta Favorites",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["mexican-food", "taco-lover", "beef-lover", "quick-dinner"],
+        "main_ingredient" : "Ground Beef",
         "ingredients": [
         ["Ground Beef", "Meat", 250, "500g"],
         ["Tortillas", "Wheat and grains", 218, "8"],
@@ -679,6 +709,8 @@
         "image": "https://example.com/tandoori_chicken.jpg",
         "theme": "Exotic Grilling",
         "meal_types": ["Dinner"],
+        "tags" : ["indian-food", "grilled-chicken", "spicy-food"],
+        "main_ingredient" : "Chicken Legs",
         "ingredients": [
         ["Chicken Legs", "Chicken", 209, "1 kg"],
         ["Yogurt", "Dairy products", 61, "1 cup"],
@@ -723,6 +755,8 @@
         "image": "https://example.com/greek_salad.jpg",
         "theme": "Mediterranean Delights",
         "meal_types": ["Appetizer", "Side Dish"],
+        "tags" : ["greek-food", "salad-lover", "mediterranean-diet"],
+        "main_ingredient" : "Feta Cheese",
         "ingredients": [
         ["Lettuce", "Vegetables", 15, "1 head"],
         ["Tomatoes", "Vegetables", 18, "2"],
@@ -766,6 +800,8 @@
         "image": "https://example.com/butternut_squash_soup.jpg",
         "theme": "Comforting Classics",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["comfort-food", "soup-lover", "vegetarian"],
+        "main_ingredient" : "Butternut Squash",
         "ingredients": [
         ["Butternut Squash", "Vegetables", 45, "1 large"],
         ["Onion", "Vegetables", 40, "1"],
@@ -814,6 +850,8 @@
         "image": "https://example.com/caprese_salad.jpg",
         "theme": "Mediterranean Delights",
         "meal_types": ["Appetizer", "Side Dish"],
+        "tags" : ["italian-food", "salad-lover", "mediterranean-diet"],
+        "main_ingredient" : "Tomatoes",
         "ingredients": [
         ["Tomatoes", "Vegetables", 18, "2"],
         ["Fresh Mozzarella", "Dairy products", 250, "200g"],
@@ -853,6 +891,8 @@
         "image": "https://example.com/mushroom_risotto.jpg",
         "theme": "Italian Classics",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["italian-food", "mushroom-dish"],
+        "main_ingredient" : "Mushrooms",
         "ingredients": [
         ["Arborio Rice", "Wheat and grains", 130, "1 cup"],
         ["Mushrooms", "Vegetables", 22, "300g"],
@@ -901,6 +941,8 @@
         "image": "https://example.com/pesto_pasta.jpg",
         "theme": "Quick and Easy",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["italian-food", "quick-lunch", "quick-dinner", "mediterranean-diet"],
+        "main_ingredient" : "Pasta (Spaghetti, Linguine, or Penne)",
         "ingredients": [
         ["Pasta (Spaghetti, Linguine, or Penne)", "Wheat and grains", 130, "400g"],
         ["Basil Pesto", "N/A", 400, "1/2 cup"],
@@ -943,6 +985,8 @@
         "image": "https://example.com/chicken_pad_thai.jpg",
         "theme": "Exotic Flavors",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["thai-food", "noodle-dish", "quick-dinner"],
+        "main_ingredient" : "Rice Noodles",
         "ingredients": [
         ["Rice Noodles", "Wheat and grains", 130, "200g"],
         ["Chicken Breast", "Chicken", 165, "300g"],
@@ -994,6 +1038,8 @@
         "image": "https://example.com/shrimp_scampi.jpg",
         "theme": "Seafood Sensations",
         "meal_types": ["Dinner"],
+        "tags" : ["italian-food", "seafood-dish", "quick-dinner"],
+        "main_ingredient" : "Large Shrimp (Peeled and Deveined)",
         "ingredients": [
         ["Large Shrimp (Peeled and Deveined)", "Seafood", 99, "500g"],
         ["Garlic", "Vegetables", 149, "4 cloves"],
@@ -1040,6 +1086,8 @@
         "image": "https://example.com/ratatouille.jpg",
         "theme": "Vegetarian Delights",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["french-food", "vegetable-dish", "vegetarian"],
+        "main_ingredient" : "Tomatoes",
         "ingredients": [
         ["Tomatoes", "Vegetables", 18, "4"],
         ["Zucchini", "Vegetables", 17, "2"],
@@ -1085,6 +1133,8 @@
         "image": "https://example.com/falafel.jpg",
         "theme": "Vegetarian Delights",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["middle-eastern-food", "vegetarian", "quick-lunch", "quick-dinner"],
+        "main_ingredient" : "Dried Chickpeas (Soaked Overnight)",
         "ingredients": [
         ["Dried Chickpeas (Soaked Overnight)", "Legumes", 164, "1 cup"],
         ["Onion", "Vegetables", 40, "1"],
@@ -1132,6 +1182,8 @@
         "image": "https://example.com/ginger_soy_glazed_salmon.jpg",
         "theme": "Seafood Sensations",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["asian-food", "seafood", "quick-dinner"],
+        "main_ingredient" : "Salmon Fillets",
         "ingredients": [
         ["Salmon Fillets", "Seafood", 208, "4"],
         ["Soy Sauce", "N/A", 8, "1/4 cup"],
@@ -1174,6 +1226,8 @@
         "image": "https://example.com/turkish_karniyarik.jpg",
         "theme": "Mediterranean Delights",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["turkish-food", "mediterranean-diet", "beef-lover"],
+        "main_ingredient" : "Ground Beef",
         "ingredients": [
         ["Eggplants", "Vegetables", 25, "4"],
         ["Ground Beef", "Meat", 250, "300g"],
@@ -1221,6 +1275,8 @@
         "image": "https://example.com/french_croque_monsieur.jpg",
         "theme": "European Delights",
         "meal_types": ["Lunch"],
+        "tags" : ["french-food", "sandwich-lover", "cheese-lover"],
+        "main_ingredient" : "Ham Slices",
         "ingredients": [
         ["Ham Slices", "Meat", 145, "8"],
         ["Gruyère Cheese (Grated)", "Dairy products", 413, "1 1/2 cups"],
@@ -1265,6 +1321,8 @@
         "image": "https://example.com/chinese_har_gow.jpg",
         "theme": "Asian Fusion",
         "meal_types": ["Appetizer", "Dim Sum"],
+        "tags" : ["chinese-food", "seafood", "asian-food"],
+        "main_ingredient" : "Shrimp (Peeled and Deveined)",
         "ingredients": [
         ["Shrimp (Peeled and Deveined)", "Seafood", 99, "500g"],
         ["Bamboo Shoots (Finely Chopped)", "Vegetables", 27, "1/2 cup"],
@@ -1315,6 +1373,8 @@
         "image": "https://example.com/mexican_tres_leches_cake.jpg",
         "theme": "Latin American Treats",
         "meal_types": ["Dessert"],
+        "tags" : ["mexican-food", "cake-lover", "sweet-tooth"],
+        "main_ingredient" : "Sweetened Condensed Milk",
         "ingredients": [
         ["All-Purpose Flour", "Wheat and grains", 364, "1 1/2 cups"],
         ["Baking Powder", "N/A", 0, "1 tsp"],
@@ -1365,6 +1425,8 @@
         "image": "https://example.com/thai_green_curry.jpg",
         "theme": "Exotic Flavors",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["thai-food", "curry-lover", "spicy-food"],
+        "main_ingredient" : "Chicken Breast (Sliced)",
         "ingredients": [
         ["Chicken Breast (Sliced)", "Chicken", 165, "500g"],
         ["Coconut Milk", "Nuts", 230, "2 cups"],
@@ -1413,6 +1475,8 @@
         "image": "https://example.com/japanese_tempura.jpg",
         "theme": "Asian Fusion",
         "meal_types": ["Appetizer", "Main Course"],
+        "tags" : ["japanese-food", "seafood", "asian-food"],
+        "main_ingredient" : "Shrimp (Peeled and Deveined, Tails Intact)",
         "ingredients": [
         ["Shrimp (Peeled and Deveined, Tails Intact)", "Seafood", 99, "12"],
         ["Assorted Vegetables (Such as Sweet Potato, Zucchini, and Bell Pepper)", "Vegetables", 27, "2 cups"],
@@ -1460,6 +1524,8 @@
     "image": "https://example.com/indian_butter_chicken.jpg",
     "theme": "Exotic Flavors",
     "meal_types": ["Dinner"],
+    "tags" : ["indian-food", "chicken-lover", "spicy-food"],
+    "main_ingredient" : "Chicken Thighs (Boneless, Skinless, Cubed)",
     "ingredients": [
         ["Chicken Thighs (Boneless, Skinless, Cubed)", "Chicken", 177, "600g"],
         ["Yogurt", "Dairy products", 59, "1/2 cup"],
@@ -1510,6 +1576,8 @@
     "image": "https://example.com/brazilian_feijoada.jpg",
     "theme": "Latin American Treats",
     "meal_types": ["Lunch", "Dinner"],
+    "tags" : ["brazilian-food", "meat-lover", "comfort-food"],
+    "main_ingredient" : "Pork Shoulder (Cubed)",
     "ingredients": [
         ["Black Beans (Soaked Overnight)", "Legumes", 341, "500g"],
         ["Pork Shoulder (Cubed)", "Meat", 250, "500g"],
@@ -1556,6 +1624,8 @@
     "image": "https://example.com/thai_mango_sticky_rice.jpg",
     "theme": "Exotic Flavors",
     "meal_types": ["Dessert"],
+    "tags" : ["thai-food", "mango-lover", "sweet-tooth"],
+    "main_ingredient" : "Ripe Mangoes (Peeled and Sliced)",
     "ingredients": [
         ["Glutinous Rice (Soaked Overnight)", "Wheat and grains", 364, "1 cup"],
         ["Coconut Milk (Divided)", "Nuts", 230, "1 1/2 cups"],
@@ -1597,6 +1667,8 @@
     "image": "https://example.com/spanish_paella.jpg",
     "theme": "Mediterranean Delights",
     "meal_types": ["Lunch", "Dinner"],
+    "tags" : ["spanish-food", "seafood", "rice-dish", "mediterranean-diet"],
+    "main_ingredient" : "Chicken Thighs (Boneless, Skinless, Cubed)",
     "ingredients": [
         ["Chicken Thighs (Boneless, Skinless, Cubed)", "Chicken", 177, "300g"],
         ["Chorizo Sausage (Sliced)", "Meat", 455, "200g"],
@@ -1647,6 +1719,8 @@
     "image": "https://example.com/turkish_baklava.jpg",
     "theme": "Middle Eastern Delights",
     "meal_types": ["Dessert"],
+    "tags" : ["turkish-food", "pastry-lover", "sweet-tooth"],
+    "main_ingredient" : "Phyllo Dough (Thawed if Frozen)",
     "ingredients": [
         ["Phyllo Dough (Thawed if Frozen)", "Wheat and grains", 364, "1 package"],
         ["Unsalted Butter (Melted)", "Dairy products", 717, "1 cup"],
@@ -1691,6 +1765,8 @@
     "image": "https://example.com/mexican_tacos_al_pastor.jpg",
     "theme": "Latin American Treats",
     "meal_types": ["Lunch", "Dinner"],
+    "tags" : ["mexican-food", "taco-lover", "street-food"],
+    "main_ingredient" : "Pork Shoulder (Thinly Sliced)",
     "ingredients": [
         ["Pork Shoulder (Thinly Sliced)", "Meat", 250, "1 kg"],
         ["Achiote Paste", "N/A", 33, "4 tbsp"],
@@ -1734,6 +1810,8 @@
     "image": "https://example.com/italian_tiramisu.jpg",
     "theme": "Mediterranean Delights",
     "meal_types": ["Dessert"],
+    "tags" : ["italian-food", "coffee-lover", "sweet-tooth"],
+    "main_ingredient" : "Ladyfingers",
     "ingredients": [
         ["Ladyfingers", "Wheat and grains", 364, "24"],
         ["Espresso (Strong, Cooled)", "N/A", 2, "1 1/2 cups"],
@@ -1779,6 +1857,8 @@
     "image": "https://example.com/japanese_ramen.jpg",
     "theme": "Asian Comfort Food",
     "meal_types": ["Lunch", "Dinner"],
+    "tags" : ["japanese-food", "noodle-soup", "comfort-food"],
+    "main_ingredient" : "Ramen Noodles",
     "ingredients": [
         ["Chicken Bones", "Meat", 195, "1 kg"],
         ["Pork Bones", "Meat", 185, "1 kg"],
@@ -1830,6 +1910,8 @@
     "image": "https://example.com/moroccan_tagine.jpg",
     "theme": "Exotic Flavors",
     "meal_types": ["Lunch", "Dinner"],
+    "tags" : ["stew", "comfort-food"],
+    "main_ingredient" : "Lamb Shoulder (Cubed)",
     "ingredients": [
         ["Lamb Shoulder (Cubed)", "Meat", 258, "800g"],
         ["Onion (Chopped)", "Vegetables", 40, "1"],
@@ -1881,6 +1963,8 @@
     "image": "https://example.com/greek_moussaka.jpg",
     "theme": "Mediterranean Delights",
     "meal_types": ["Lunch", "Dinner"],
+    "tags" : ["greek-food", "casserole", "comfort-food", "beef-lover"],
+    "main_ingredient" : "Ground Beef or Lamb",
     "ingredients": [
         ["Eggplant (Sliced)", "Vegetables", 25, "2 large"],
         ["Olive Oil", "Oils", 884, "1/4 cup"],
@@ -1938,6 +2022,8 @@
     "image": "https://example.com/vietnamese_pho.jpg",
     "theme": "Asian Comfort Food",
     "meal_types": ["Lunch", "Dinner"],
+    "tags" : ["vietnamese-food", "noodle-dish", "comfort-food"],
+    "main_ingredient" : "Beef Bones (Marrow and Knuckle)",
     "ingredients": [
         ["Beef Bones (Marrow and Knuckle)", "Meat", 195, "1.5 kg"],
         ["Onion (Halved)", "Vegetables", 40, "2"],
@@ -1991,6 +2077,8 @@
         "image": "https://example.com/portuguese_bacalhau_a_bras.jpg",
         "theme": "Coastal Flavors",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["portuguese-food", "seafood", "comfort-food"],
+        "main_ingredient" : "Salted Cod (Bacalhau)",
         "ingredients": [
         ["Salted Cod (Bacalhau)", "Seafood", 82, "500g"],
         ["Potatoes (Thinly Sliced)", "Vegetables", 77, "4"],
@@ -2036,6 +2124,8 @@
         "image": "https://example.com/english_fish_and_chips.jpg",
         "theme": "British Classics",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["british-food", "seafood", "comfort-food", "quick-lunch"],
+        "main_ingredient" : "Cod or Haddock Fillets",
         "ingredients": [
         ["Cod or Haddock Fillets", "Seafood", 82, "4"],
         ["Potatoes (Cut into Chunky Chips)", "Vegetables", 77, "4"],
@@ -2080,6 +2170,8 @@
         "image": "https://example.com/french_coq_au_vin.jpg",
         "theme": "French Delicacies",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["french-food", "chicken-dish", "comfort-food"],
+        "main_ingredient" : "Chicken (Cut into Pieces)",
         "ingredients": [
         ["Chicken (Cut into Pieces)", "Chicken", 219, "1.5 kg"],
         ["Red Wine (Burgundy or Pinot Noir)", "N/A", 82, "2 cups"],
@@ -2130,6 +2222,8 @@
         "image": "https://example.com/dutch_stroopwafels.jpg",
         "theme": "Dutch Treats",
         "meal_types": ["Snack", "Dessert"],
+        "tags" : ["dutch-food", "waffle-cookie", "sweet-tooth", "quick-dinner", "quick-lunch"],
+        "main_ingredient" : "All-Purpose Flour",
         "ingredients": [
         ["All-Purpose Flour", "Wheat and grains", 364, "2 cups"],
         ["Instant Yeast", "N/A", 7, "1 tsp"],
@@ -2177,6 +2271,8 @@
         "image": "https://example.com/ethiopian_doro_wat.jpg",
         "theme": "African Delights",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["ethiopian-food", "stew", "comfort-food"],
+        "main_ingredient" : "Chicken Drumsticks",
         "ingredients": [
         ["Chicken Drumsticks", "Chicken", 219, "8"],
         ["Lemon Juice", "Fruit", 30, "1/4 cup"],
@@ -2222,6 +2318,8 @@
         "image": "https://example.com/chinese_kung_pao_chicken.jpg",
         "theme": "Oriental Delights",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["chinese-food", "stir-fry", "comfort-food"],
+        "main_ingredient" : "Chicken Breast (Boneless, Skinless)",
         "ingredients": [
         ["Chicken Breast (Boneless, Skinless)", "Chicken", 165, "400g"],
         ["Soy Sauce", "N/A", 55, "2 tbsp"],
@@ -2272,6 +2370,8 @@
         "image": "https://example.com/filipino_chicken_adobo.jpg",
         "theme": "Tropical Flavors",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["filipino-food", "chicken-dish", "comfort-food"],
+        "main_ingredient" : "Chicken Thighs (Bone-in, Skin-on)",
         "ingredients": [
         ["Chicken Thighs (Bone-in, Skin-on)", "Chicken", 219, "1.5 kg"],
         ["White Vinegar", "N/A", 18, "1/2 cup"],
@@ -2314,6 +2414,8 @@
         "image": "https://example.com/czech_svickova.jpg",
         "theme": "Central European Comfort",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["czech-food", "beef-lover", "comfort-food"],
+        "main_ingredient" : "Beef Sirloin",
         "ingredients": [
         ["Beef Sirloin", "Meat", 250, "1.5 kg"],
         ["Carrot (Chopped)", "Vegetables", 41, "1"],
@@ -2368,6 +2470,8 @@
         "image": "https://example.com/german_schnitzel.jpg",
         "theme": "Bavarian Classics",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["german-food", "meat-lover", "comfort-food"],
+        "main_ingredient" : "Pork Cutlets (Boneless, Thinly Pounded)",
         "ingredients": [
         ["Pork Cutlets (Boneless, Thinly Pounded)", "Meat", 235, "4"],
         ["All-Purpose Flour", "Wheat and grains", 364, "1 cup"],
@@ -2411,6 +2515,8 @@
         "image": "https://example.com/american_bbq_ribs.jpg",
         "theme": "Southern Comfort",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["american-food", "meat-lover", "comfort-food", "weekend-dinner"],
+        "main_ingredient" : "Pork Baby Back Ribs",
         "ingredients": [
         ["Pork Baby Back Ribs", "Meat", 361, "2 racks"],
         ["Paprika", "N/A", 282, "2 tbsp"],
@@ -2453,6 +2559,8 @@
         "image": "https://example.com/albanian_fergese.jpg",
         "theme": "Balkan Delights",
         "meal_types": ["Lunch", "Dinner"],
+        "tags" : ["albanian-food", "vegetarian", "comfort-food"],
+        "main_ingredient" : "Feta Cheese (Crumbled)",
         "ingredients": [
         ["Red Bell Peppers", "Vegetables", 31, "4"],
         ["Tomatoes (Chopped)", "Vegetables", 18, "4"],
