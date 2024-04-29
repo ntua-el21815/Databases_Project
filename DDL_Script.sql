@@ -87,6 +87,19 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE FUNCTION age(birth_date DATE) RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE age INT;
+    
+    SET age = YEAR(CURDATE()) - YEAR(birth_date);
+    RETURN age;
+END //
+
+DELIMITER ;
+
 CREATE TABLE Episodes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     episode_number INT NOT NULL,
@@ -211,6 +224,15 @@ CREATE TABLE Tags (
     
 );
 
+CREATE TABLE chef_recipes (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    chef_id INT NOT NULL,
+    recipe_id INT NOT NULL,
+    CONSTRAINT chk_unique_pair UNIQUE (chef_id, recipe_id),
+    FOREIGN KEY (chef_id) REFERENCES Chefs(id),
+    FOREIGN KEY (recipe_id) REFERENCES Recipes(id)
+);
+
 CREATE TABLE episode_cuisines (
     id INT PRIMARY KEY AUTO_INCREMENT,
     episode_id INT NOT NULL,
@@ -244,6 +266,7 @@ CREATE TABLE recipe_tags (
     FOREIGN KEY (tag_id) REFERENCES Tags(id)
 );
 
+/* Probably not needed 
 CREATE TABLE episode_recipes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     episode_id INT NOT NULL,
@@ -252,6 +275,7 @@ CREATE TABLE episode_recipes (
     FOREIGN KEY (episode_id) REFERENCES Episodes(id),
     FOREIGN KEY (recipe_id) REFERENCES Recipes(id)
 );
+*/
 
 CREATE TABLE requires (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -353,3 +377,40 @@ END //
 DELIMITER ;
 
 DELIMITER //
+
+CREATE TRIGGER `SetEpisodeWinner` AFTER INSERT ON `rates`
+FOR EACH ROW
+BEGIN
+    DECLARE winner_id INT;
+
+    SELECT contestant_id INTO winner_id
+    FROM rates
+    WHERE episode_id = NEW.episode_id
+    GROUP BY contestant_id
+    ORDER BY SUM(score) DESC
+    LIMIT 1;
+
+    UPDATE Episodes
+    SET winner_id = winner_id
+    WHERE id = NEW.episode_id;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER 'SetEpisodeCuisine' AFTER INSERT ON 'chefs_recipes_episode'
+FOR EACH ROW
+BEGIN
+    DECLARE cuisine_id INT;
+
+    SELECT cuisine_id INTO cuisine_id
+    FROM Recipes
+    WHERE id = NEW.recipe_id;
+
+    IF (episode_id, cuisine_id) NOT IN (SELECT episode_id, cuisine_id FROM episode_cuisines) THEN
+        INSERT INTO episode_cuisines (episode_id, cuisine_id)
+        VALUES (NEW.episode_id, cuisine_id);
+END //
+
+DELIMITER ;
