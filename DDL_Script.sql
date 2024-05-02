@@ -1,5 +1,3 @@
-
-
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
@@ -12,7 +10,7 @@ USE CookingContest;
 
 CREATE TABLE Images (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    image BLOB NOT NULL,
+    image LONGBLOB NOT NULL,
     descr TEXT
 );
 
@@ -399,18 +397,21 @@ DELIMITER ;
 
 DELIMITER //
 
-CREATE TRIGGER 'SetEpisodeCuisine' AFTER INSERT ON 'chefs_recipes_episode'
+CREATE TRIGGER `SetEpisodeCuisine` AFTER INSERT ON `chefs_recipes_episode`
 FOR EACH ROW
 BEGIN
-    DECLARE cuisine_id INT;
+    DECLARE cus_id INT;
 
-    SELECT cuisine_id INTO cuisine_id
-    FROM Recipes
-    WHERE id = NEW.recipe_id;
+    SELECT cuisine_id INTO cus_id
+    FROM chef_recipes
+    JOIN Recipes
+    ON chef_recipes.recipe_id = Recipes.id
+    WHERE chef_recipes.chef_id = NEW.chef_id
+    AND Recipes.id = NEW.recipe_id;
 
-    IF (episode_id, cuisine_id) NOT IN (SELECT episode_id, cuisine_id FROM episode_cuisines) THEN
-        INSERT INTO episode_cuisines (episode_id, cuisine_id)
-        VALUES (NEW.episode_id, cuisine_id);
+    INSERT INTO episode_cuisines (episode_id, cuisine_id)
+    VALUES (NEW.episode_id, cus_id);
 END //
 
 DELIMITER ;
+
