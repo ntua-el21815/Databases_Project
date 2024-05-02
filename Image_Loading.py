@@ -2,10 +2,14 @@ import json
 import os
 import mysql.connector
 
+#$Env:<variable-name> = "<new-value>" - to set environment variable in PowerShell
+#$Env:Foo = 'An example' - example
+pswrd = os.getenv("MYSQL_KEY")
+
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="aekara4012",
+    password= pswrd,
     database="CookingContest"
 )
 
