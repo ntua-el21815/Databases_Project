@@ -1,6 +1,10 @@
 USE cookingcontest;
 
 /* Random Queries to validate stuff */
+SELECT * FROM dietaryinfo;
+
+SELECT * FROM recipes;
+
 SELECT recipes.id,recipes.name,themes.name,themes.descr FROM recipes JOIN recipe_theme JOIN themes WHERE recipes.id = recipe_theme.recipe_id AND recipe_theme.theme_id = themes.id;
 
 SELECT ingredients.name,foodgroups.name FROM ingredients JOIN foodgroups WHERE ingredients.food_group_id= foodgroups.id;
@@ -13,6 +17,19 @@ SELECT episode_number,year_played,chefs.name,chefs.surname FROM chefs JOIN episo
 
 SELECT age(birth_date) AS 'Age' FROM chefs;
 
+SELECT recipes.name,images.image FROM recipes JOIN images WHERE recipes.image_id = images.id OR recipes.image_id IS NULL;
+SELECT * FROM images;
+
+SET SQL_SAFE_UPDATES = 0;
+
+DELETE FROM Images;
+
+SELECT * FROM chefs_recipes_episode;
+
+SELECT episodes.year_played,episodes.episode_number,cuisines.country_name 
+	FROM episode_cuisines JOIN episodes JOIN cuisines 
+	WHERE episode_cuisines.episode_id = episodes.id AND episode_cuisines.cuisine_id = cuisines.id
+    ORDER BY year_played,episode_number ASC;
 /* End of Random Queries */
 
 /* Question 3.1 */
@@ -46,3 +63,13 @@ FROM chefs WHERE age(birth_date) < 30 ORDER BY Recipes DESC;
 SELECT * FROM chefs WHERE id NOT IN (SELECT DISTINCT(judge_id) FROM is_judge);
 /* End of Question 3.4 */
 
+/* Question 3.5 */
+/* Selecting all the judges that have been in the same number of episodes and have been
+in at least 3 episodes within a specific year */
+SELECT year_played AS Year,chefs.id AS 'Chef id',chefs.name,chefs.surname,COUNT(DISTINCT chefs_recipes_episode.episode_id) 'Episodes' 
+    FROM chefs JOIN chefs_recipes_episode JOIN is_judge JOIN episodes
+    WHERE chefs.id = chefs_recipes_episode.chef_id AND chefs.id = is_judge.judge_id AND chefs_recipes_episode.episode_id = episodes.id
+    GROUP BY year_played,chefs.id
+    HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) >= 3
+    ORDER BY Year,Episodes DESC;
+/* End of Question 3.5 */
