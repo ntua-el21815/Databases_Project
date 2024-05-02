@@ -1308,58 +1308,6 @@
         ]
     },
     {
-        "name": "Chinese Dim Sum: Har Gow (Shrimp Dumplings)",
-        "short_desc": "Delicate and translucent shrimp dumplings with a thin wrapper, served steamed and dipped in soy sauce.",
-        "recipe_type": "gastronomy",
-        "difficulty_level": 3,
-        "TIP1": "Use a combination of shrimp paste and chopped whole shrimp for the best texture.",
-        "TIP2": "Keep the dumpling wrappers covered with a damp cloth to prevent them from drying out.",
-        "TIP3": "Steam dumplings over high heat for a short amount of time to maintain their delicate texture.",
-        "prep_time": "45 minutes",
-        "cook_time": "10 minutes",
-        "cuisine": "Chinese",
-        "image": "https://example.com/chinese_har_gow.jpg",
-        "theme": "Asian Fusion",
-        "meal_types": ["Appetizer", "Dim Sum"],
-        "tags" : ["chinese-food", "seafood", "asian-food"],
-        "main_ingredient" : "Shrimp (Peeled and Deveined)",
-        "ingredients": [
-        ["Shrimp (Peeled and Deveined)", "Seafood", 99, "500g"],
-        ["Bamboo Shoots (Finely Chopped)", "Vegetables", 27, "1/2 cup"],
-        ["Water Chestnuts (Finely Chopped)", "Vegetables", 24, "1/2 cup"],
-        ["Ginger (Minced)", "Vegetables", 80, "1 tbsp"],
-        ["Garlic (Minced)", "Vegetables", 149, "2 cloves"],
-        ["Cornstarch", "N/A", 381, "2 tbsp"],
-        ["Sesame Oil", "Oils", 884, "1 tbsp"],
-        ["Soy Sauce", "N/A", 8, "1 tbsp"],
-        ["Salt", "N/A", 0, "1/2 tsp"],
-        ["White Pepper", "N/A", 255, "1/4 tsp"],
-        ["Sugar", "N/A", 387, "1/2 tsp"],
-        ["Wheat Starch", "Wheat and grains", 339, "1/2 cup"],
-        ["Tapioca Starch", "N/A", 100, "1/4 cup"],
-        ["Boiling Water", "N/A", 0, "1/2 cup"]
-        ],
-        "dietary_info": [18, 13, 69],
-        "steps": [
-        "In a food processor, combine half of the shrimp with minced ginger, minced garlic, cornstarch, sesame oil, soy sauce, salt, white pepper, and sugar. Process until a smooth paste forms.",
-        "Chop the remaining shrimp into small pieces and mix with finely chopped bamboo shoots and water chestnuts.",
-        "Combine the shrimp paste with the chopped shrimp mixture and mix well. Chill in the refrigerator for 30 minutes.",
-        "In a large bowl, mix wheat starch and tapioca starch. Gradually add boiling water while stirring until a smooth dough forms.",
-        "Knead the dough on a clean surface until smooth and elastic. Divide into small balls.",
-        "Roll each ball into a thin wrapper using a rolling pin. Keep wrappers covered with a damp cloth to prevent drying.",
-        "Place a spoonful of the shrimp filling onto the center of each wrapper. Fold the wrapper in half and pinch the edges to seal.",
-        "Arrange dumplings on a parchment-lined steamer basket, leaving space between each dumpling.",
-        "Steam dumplings over high heat for 8-10 minutes until the wrappers are translucent and the filling is cooked through.",
-        "Serve hot with soy sauce for dipping."
-        ],
-        "quantity": 4,
-        "kitchenware": [
-        ["Food Processor", "For making shrimp paste"],
-        ["Rolling Pin", "For rolling dumpling wrappers"],
-        ["Steamer Basket", "For steaming dumplings"]
-        ]
-    },
-    {
         "name": "Mexican Tres Leches Cake",
         "short_desc": "Decadent sponge cake soaked in a mixture of three milks (evaporated milk, condensed milk, and heavy cream), topped with whipped cream and fresh berries.",
         "recipe_type": "pastry",
@@ -2587,6 +2535,58 @@
         ["Baking Sheet", "For roasting peppers"],
         ["Skillet", "For sautéing onions and tomatoes"],
         ["Baking Dish", "For baking Fërgesë"]
+        ]
+    },
+    {
+        "name": "Chinese Dim Sum: Har Gow (Shrimp Dumplings)",
+        "short_desc": "Delicate and translucent shrimp dumplings with a thin wrapper, served steamed and dipped in soy sauce.",
+        "recipe_type": "gastronomy",
+        "difficulty_level": 3,
+        "TIP1": "Use a combination of shrimp paste and chopped whole shrimp for the best texture.",
+        "TIP2": "Keep the dumpling wrappers covered with a damp cloth to prevent them from drying out.",
+        "TIP3": "Steam dumplings over high heat for a short amount of time to maintain their delicate texture.",
+        "prep_time": "45 minutes",
+        "cook_time": "10 minutes",
+        "cuisine": "Chinese",
+        "image": "https://example.com/chinese_har_gow.jpg",
+        "theme": "Asian Fusion",
+        "meal_types": ["Appetizer", "Dim Sum"],
+        "tags" : ["chinese-food", "seafood", "asian-food"],
+        "main_ingredient" : "Shrimp (Peeled and Deveined)",
+        "ingredients": [
+        ["Shrimp (Peeled and Deveined)", "Seafood", 99, "500g"],
+        ["Bamboo Shoots (Finely Chopped)", "Vegetables", 27, "1/2 cup"],
+        ["Water Chestnuts (Finely Chopped)", "Vegetables", 24, "1/2 cup"],
+        ["Ginger (Minced)", "Vegetables", 80, "1 tbsp"],
+        ["Garlic (Minced)", "Vegetables", 149, "2 cloves"],
+        ["Cornstarch", "N/A", 381, "2 tbsp"],
+        ["Sesame Oil", "Oils", 884, "1 tbsp"],
+        ["Soy Sauce", "N/A", 8, "1 tbsp"],
+        ["Salt", "N/A", 0, "1/2 tsp"],
+        ["White Pepper", "N/A", 255, "1/4 tsp"],
+        ["Sugar", "N/A", 387, "1/2 tsp"],
+        ["Wheat Starch", "Wheat and grains", 339, "1/2 cup"],
+        ["Tapioca Starch", "N/A", 100, "1/4 cup"],
+        ["Boiling Water", "N/A", 0, "1/2 cup"]
+        ],
+        "dietary_info": [18, 13, 69],
+        "steps": [
+        "In a food processor, combine half of the shrimp with minced ginger, minced garlic, cornstarch, sesame oil, soy sauce, salt, white pepper, and sugar. Process until a smooth paste forms.",
+        "Chop the remaining shrimp into small pieces and mix with finely chopped bamboo shoots and water chestnuts.",
+        "Combine the shrimp paste with the chopped shrimp mixture and mix well. Chill in the refrigerator for 30 minutes.",
+        "In a large bowl, mix wheat starch and tapioca starch. Gradually add boiling water while stirring until a smooth dough forms.",
+        "Knead the dough on a clean surface until smooth and elastic. Divide into small balls.",
+        "Roll each ball into a thin wrapper using a rolling pin. Keep wrappers covered with a damp cloth to prevent drying.",
+        "Place a spoonful of the shrimp filling onto the center of each wrapper. Fold the wrapper in half and pinch the edges to seal.",
+        "Arrange dumplings on a parchment-lined steamer basket, leaving space between each dumpling.",
+        "Steam dumplings over high heat for 8-10 minutes until the wrappers are translucent and the filling is cooked through.",
+        "Serve hot with soy sauce for dipping."
+        ],
+        "quantity": 4,
+        "kitchenware": [
+        ["Food Processor", "For making shrimp paste"],
+        ["Rolling Pin", "For rolling dumpling wrappers"],
+        ["Steamer Basket", "For steaming dumplings"]
         ]
     }
 ]
