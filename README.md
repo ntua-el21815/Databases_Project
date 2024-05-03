@@ -13,7 +13,9 @@ To set up the database:
 3) Install via pip (mysql-connector-python)#
 4) Give folder priviliges to NETOWRK SERVICE to use Image_Loading.py (See below)
 ![Add network service to folder Security menu in Windows.](NETWORKSERVICE.jpg)
-5) Run python .\Image_Loading.py (To load the images for the recipes.)
+5) Set Variable secure_file_priv in mysql to the absolute directory of Images folder.
+    SET secure_file_priv = "{your_directory}";
+6) Run python .\Image_Loading.py (To load the images for the recipes.)
 
 Notes:
 Recipes.json has dummy data for the recipes.
