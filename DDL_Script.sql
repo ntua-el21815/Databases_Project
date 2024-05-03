@@ -329,7 +329,7 @@ CREATE TABLE chefs_recipes_episode (
     /* The triplet (episode_id, chef_id, recipe_id) must be unique */
     CONSTRAINT chk_unique_participation UNIQUE (episode_id, chef_id, recipe_id),
     /* A chef must not participate in three consecutive episodes */
-    CONSTRAINT chk_consecutive_episodes CHECK ( 
+   /* CONSTRAINT chk_consecutive_episodes CHECK ( 
         (SELECT COUNT(*) FROM chefs_recipes_episode
         WHERE chef_id = chef_id
         AND (
@@ -338,7 +338,7 @@ CREATE TABLE chefs_recipes_episode (
             OR episode_id = episode_id - 3
         )
         ) < 3
-    ),
+    ),remember to make this trigger*/
     FOREIGN KEY (episode_id) REFERENCES Episodes(id),
     FOREIGN KEY (chef_id) REFERENCES Chefs(id),
     FOREIGN KEY (recipe_id) REFERENCES Recipes(id)
@@ -351,7 +351,7 @@ CREATE TABLE is_judge (
     /* A chef can't be a judge in the same episode twice */
     CONSTRAINT chk_judge UNIQUE (judge_id, episode_id),
     /* A chef must not be chosen for three consecutive episodes */
-    CONSTRAINT chk_consecutive_episodes CHECK (
+    /*CONSTRAINT chk_consecutive_episodes CHECK (
         (SELECT COUNT(*) FROM is_judge
         WHERE judge_id = judge_id
         AND (
@@ -360,7 +360,7 @@ CREATE TABLE is_judge (
             OR episode_id = episode_id - 3
         )
         ) < 3
-    ),
+    ),remember to make this a trigger*/
     FOREIGN KEY (judge_id) REFERENCES Chefs(id),
     FOREIGN KEY (episode_id) REFERENCES Episodes(id)
 );
