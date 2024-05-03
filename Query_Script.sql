@@ -1,6 +1,8 @@
 USE cookingcontest;
 
 /* Random Queries to validate stuff */
+SELECT * FROM images;
+
 SELECT * FROM dietaryinfo;
 
 SELECT * FROM recipes;
@@ -24,6 +26,12 @@ SELECT recipes.name,images.image FROM recipes JOIN images WHERE recipes.image_id
 SELECT * FROM images;
 
 SET SQL_SAFE_UPDATES = 0;
+
+SHOW VARIABLES LIKE 'secure_file_priv';
+
+GRANT FILE ON *.* TO 'root'@'localhost';
+
+SELECT LOAD_FILE('c:\\Users\\nicho\\Documents\\Github_Repos_NicholasAgg\\Databases_Project\\Images\\Recipe_1.jpg');
 
 DELETE FROM Images;
 
