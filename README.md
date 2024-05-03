@@ -10,7 +10,8 @@ have to pull the repo.
 To set up the database:
 1) Run the DDL_Script.sql in mysql.
 2) Run the DML_SCRIPT.sql in mysql.
-3) Run python .\Image_Loading.py (To load the images for the recipes.)
+3) Install the mysql-connector-python driver using pip.
+4) Run python .\Image_Loading.py (To load the images for the recipes.)
 
 Notes:
 Recipes.json has dummy data for the recipes.
