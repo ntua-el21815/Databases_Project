@@ -73,6 +73,6 @@ SELECT year_played AS Year,chefs.id AS 'Chef id',chefs.name,chefs.surname,COUNT(
     FROM chefs JOIN chefs_recipes_episode JOIN is_judge JOIN episodes
     WHERE chefs.id = chefs_recipes_episode.chef_id AND chefs.id = is_judge.judge_id AND chefs_recipes_episode.episode_id = episodes.id
     GROUP BY year_played,chefs.id
-    HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) >= 3
+    HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) > 3
     ORDER BY Year,Episodes DESC;
 /* End of Question 3.5 */
