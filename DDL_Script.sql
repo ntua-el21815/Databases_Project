@@ -40,6 +40,7 @@ CREATE TABLE Recipes (
     CONSTRAINT chk_prep_time CHECK (prep_time >= '00:00:00'),
     cook_time TIME(0) NOT NULL,
     CONSTRAINT chk_cook_time CHECK (cook_time >= '00:00:00'),
+    total_time TIME(0) AS (ADDTIME(prep_time, cook_time)) NOT NULL,
     cuisine_id INT NOT NULL,
     image_id INT,
     FOREIGN KEY (cuisine_id) REFERENCES Cuisines(id),
@@ -58,7 +59,7 @@ CREATE TABLE Chefs (
     CONSTRAINT chk_birth_date CHECK (birth_date <= CURDATE() AND birth_date >= '1900-01-01'),
     /* Age should be returned at the time of query based on birth date. */
     work_experience TINYINT,
-    prof_certification INT DEFAULT NULL,
+    prof_certification TINYINT NOT NULL,
     CONSTRAINT chk_work_experience CHECK (work_experience >= 0),
     CONSTRAINT chk_prof_certification CHECK (prof_certification BETWEEN 0 AND 5 AND NOT NULL)
 );
@@ -372,20 +373,48 @@ BEGIN
     SET NEW.calories = calculate_calories(NEW.recipe_id);
 END //
 
+CREATE TRIGGER `ReCalculateCalories` BEFORE UPDATE ON `DietaryInfo`
+FOR EACH ROW
+BEGIN
+    SET NEW.calories = calculate_calories(NEW.recipe_id);
+END //
+
 DELIMITER ;
 
 DELIMITER //
 
+/* Trigger to set the winner of an episode based on the ratings */
 CREATE TRIGGER `SetEpisodeWinner` AFTER INSERT ON `rates`
 FOR EACH ROW
 BEGIN
     DECLARE winner_id INT;
 
     SELECT contestant_id INTO winner_id
-    FROM rates
-    WHERE episode_id = NEW.episode_id
+    FROM rates JOIN chefs
+    WHERE episode_id = NEW.episode_id AND chefs.id = contestant_id
     GROUP BY contestant_id
-    ORDER BY SUM(score) DESC
+    ORDER BY SUM(score) DESC, prof_certification DESC /* If scores are equal, the chef with the highest certification wins */
+    LIMIT 1;
+
+    UPDATE Episodes
+    SET winner_id = winner_id
+    WHERE id = NEW.episode_id;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER `FixEpisodeWinner` AFTER UPDATE ON `rates`
+FOR EACH ROW
+BEGIN
+    DECLARE winner_id INT;
+
+    SELECT contestant_id INTO winner_id
+    FROM rates JOIN chefs
+    WHERE episode_id = NEW.episode_id AND chefs.id = contestant_id
+    GROUP BY contestant_id
+    ORDER BY SUM(score) DESC, prof_certification DESC /* If scores are equal, the chef with the highest certification wins */
     LIMIT 1;
 
     UPDATE Episodes
