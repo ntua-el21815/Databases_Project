@@ -56,7 +56,7 @@ CREATE TABLE Chefs (
     CONSTRAINT chk_phone_number CHECK (phone_number REGEXP '^[0-9]{0,15}$'),
     birth_date DATE NOT NULL,
     /* You must have been born and not be dead to participate. */
-    CONSTRAINT chk_birth_date CHECK (birth_date <= CURDATE() AND birth_date >= '1900-01-01'),
+    /* CONSTRAINT chk_birth_date CHECK (birth_date <= CURDATE() AND birth_date >= '1900-01-01'), Make this as trigger. */
     /* Age should be returned at the time of query based on birth date. */
     work_experience TINYINT,
     prof_certification TINYINT NOT NULL,
