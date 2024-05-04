@@ -23,6 +23,7 @@ SELECT episode_number,year_played,chefs.name,chefs.surname FROM chefs JOIN episo
 SELECT age(birth_date) AS 'Age' FROM chefs;
 
 SELECT recipes.name,images.image FROM recipes JOIN images WHERE recipes.image_id = images.id OR recipes.image_id IS NULL;
+
 SELECT * FROM images;
 
 SET SQL_SAFE_UPDATES = 0;
@@ -31,7 +32,6 @@ SHOW VARIABLES LIKE 'secure_file_priv';
 
 GRANT FILE ON *.* TO 'root'@'localhost';
 
-SELECT LOAD_FILE('c:\\Users\\nicho\\Documents\\Github_Repos_NicholasAgg\\Databases_Project\\Images\\Recipe_1.jpg');
 
 DELETE FROM Images;
 
