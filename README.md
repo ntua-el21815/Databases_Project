@@ -11,7 +11,7 @@ To set up the database:
 1) Run the DDL_Script.sql in mysql.
 2) Run the DML_SCRIPT.sql in mysql.
 3) Install via pip (pip install mysql-connector-python == 8.0.28)
-4) Give folder priviliges to NETOWRK SERVICE to use Image_Loading.py (See below)
+4) Give folder priviliges to NETWORK SERVICE to use Image_Loading.py (See below)
 ![Add network service to folder Security menu in Windows.](NETWORKSERVICE.jpg)
 5) Set Variable secure-file-priv in my.ini (in %PROGRAMDATA% -> MySqlServer -> MySqlVersion) to "" for the Image_Loading Script to work.
 6) Run python .\Image_Loading.py (To load the images for the recipes.)
