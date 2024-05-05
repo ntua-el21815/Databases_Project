@@ -105,3 +105,17 @@ FROM episodes JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.
 JOIN dietaryinfo ON chefs_recipes_episode.recipe_id = dietaryinfo.recipe_id
 GROUP BY episodes.year_played;
 /*End of question 3.9*/
+
+/*Question 3.14*/
+SELECT themes.name,COUNT(*) AS Participation
+FROM themes JOIN recipe_theme ON themes.id = recipe_theme.theme_id 
+JOIN chefs_recipes_episode ON recipe_theme.recipe_id = chefs_recipes_episode.recipe_id
+GROUP BY themes.name
+ORDER BY Participation DESC
+LIMIT 1;
+/*End of question 3.14. 
+script i used to validate the answer, looks for "quick and easy" theme id and checks participation in eps: 
+select * from themes;
+SELECT* FROM recipe_theme WHERE theme_id LIKE 21;
+SELECT* FROM chefs_recipes_episode WHERE recipe_id LIKE 24 OR recipe_id LIKE 25;
+*/
