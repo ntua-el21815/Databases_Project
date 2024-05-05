@@ -96,5 +96,12 @@ HAVING Participation <= (SELECT MAX(Participation) - 5 FROM (
         GROUP BY 
             chef_id
     ) AS Subquery)
-ORDER BY id
+ORDER BY id;
 /*End of question 3.7*/
+
+/*Question 3.9*/
+SELECT episodes.year_played,AVG(dietaryinfo.hydrocarbon_content) AS AvgHydrocarbon
+FROM episodes JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id
+JOIN dietaryinfo ON chefs_recipes_episode.recipe_id = dietaryinfo.recipe_id
+GROUP BY episodes.year_played;
+/*End of question 3.9*/
