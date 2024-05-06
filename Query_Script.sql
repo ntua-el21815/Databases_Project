@@ -32,7 +32,6 @@ SHOW VARIABLES LIKE 'secure_file_priv';
 
 GRANT FILE ON *.* TO 'root'@'localhost';
 
-
 DELETE FROM Images;
 
 SELECT * FROM chefs_recipes_episode;
@@ -84,3 +83,23 @@ SELECT year_played AS Year,chefs.id AS 'Chef id',chefs.name,chefs.surname,COUNT(
     HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) >= 3
     ORDER BY Year,Episodes DESC;
 /* End of Question 3.5 */
+
+/*Question 3.7*/
+SELECT DISTINCT chefs.id,chefs.name,chefs.surname,(SELECT COUNT(*) FROM chefs_recipes_episode WHERE chefs_recipes_episode.chef_id = chefs.id) AS Participation
+	FROM chefs JOIN chefs_recipes_episode ON chefs.id = chefs_recipes_episode.chef_id
+	HAVING Participation <= (SELECT MAX(Participation) - 5 FROM (
+        SELECT 
+            COUNT(chef_id) AS Participation
+        FROM 
+            chefs_recipes_episode
+        GROUP BY 
+            chef_id
+    ) AS Subquery)
+ORDER BY id;
+/*End of question 3.7*/
+
+/*Question 3.9*/
+SELECT episodes.year_played,AVG(dietaryinfo.hydrocarbon_content) AS AvgHydrocarbon
+	FROM episodes JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id JOIN dietaryinfo ON chefs_recipes_episode.recipe_id = dietaryinfo.recipe_id
+	GROUP BY episodes.year_played;
+/*End of question 3.9*/
