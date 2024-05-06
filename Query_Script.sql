@@ -80,14 +80,14 @@ SELECT year_played AS Year,chefs.id AS 'Chef id',chefs.name,chefs.surname,COUNT(
     FROM chefs JOIN chefs_recipes_episode JOIN is_judge JOIN episodes
     WHERE chefs.id = chefs_recipes_episode.chef_id AND chefs.id = is_judge.judge_id AND chefs_recipes_episode.episode_id = episodes.id
     GROUP BY year_played,chefs.id
-    HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) >= 3
+    HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) > 3
     ORDER BY Year,Episodes DESC;
 /* End of Question 3.5 */
 
 /*Question 3.7*/
 SELECT DISTINCT chefs.id,chefs.name,chefs.surname,(SELECT COUNT(*) FROM chefs_recipes_episode WHERE chefs_recipes_episode.chef_id = chefs.id) AS Participation
-	FROM chefs JOIN chefs_recipes_episode ON chefs.id = chefs_recipes_episode.chef_id
-	HAVING Participation <= (SELECT MAX(Participation) - 5 FROM (
+FROM chefs JOIN chefs_recipes_episode ON chefs.id = chefs_recipes_episode.chef_id
+HAVING Participation <= (SELECT MAX(Participation) - 5 FROM (
         SELECT 
             COUNT(chef_id) AS Participation
         FROM 
@@ -100,6 +100,21 @@ ORDER BY id;
 
 /*Question 3.9*/
 SELECT episodes.year_played,AVG(dietaryinfo.hydrocarbon_content) AS AvgHydrocarbon
-	FROM episodes JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id JOIN dietaryinfo ON chefs_recipes_episode.recipe_id = dietaryinfo.recipe_id
-	GROUP BY episodes.year_played;
+FROM episodes JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id
+JOIN dietaryinfo ON chefs_recipes_episode.recipe_id = dietaryinfo.recipe_id
+GROUP BY episodes.year_played;
 /*End of question 3.9*/
+
+/*Question 3.14*/
+SELECT themes.name,COUNT(*) AS Participation
+FROM themes JOIN recipe_theme ON themes.id = recipe_theme.theme_id 
+JOIN chefs_recipes_episode ON recipe_theme.recipe_id = chefs_recipes_episode.recipe_id
+GROUP BY themes.name
+ORDER BY Participation DESC
+LIMIT 1;
+/*End of question 3.14. 
+script i used to validate the answer, looks for "quick and easy" theme(shows up if you remove LIMIT 1) id and checks participation in eps: 
+select * from themes;
+SELECT* FROM recipe_theme WHERE theme_id LIKE 21;
+SELECT* FROM chefs_recipes_episode WHERE recipe_id LIKE 24 OR recipe_id LIKE 25;
+*/
