@@ -444,3 +444,8 @@ END //
 
 DELIMITER ;
 
+CREATE USER 'chef'@'localhost' IDENTIFIED BY 'password';/*Change password to your desired password*/
+GRANT SELECT, INSERT, UPDATE, ALTER ON recieps TO 'chef'@'localhost';
+GRANT SELECT, INSERT, UPDATE, ALTER ON cookingcontest.chefs TO 'chef'@'localhost';
+FLUSH PRIVILEGES;
+

@@ -32,7 +32,6 @@ SHOW VARIABLES LIKE 'secure_file_priv';
 
 GRANT FILE ON *.* TO 'root'@'localhost';
 
-
 DELETE FROM Images;
 
 SELECT * FROM chefs_recipes_episode;
