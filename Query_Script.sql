@@ -118,3 +118,8 @@ select * from themes;
 SELECT* FROM recipe_theme WHERE theme_id LIKE 21;
 SELECT* FROM chefs_recipes_episode WHERE recipe_id LIKE 24 OR recipe_id LIKE 25;
 */
+
+/*Question 3.15*/
+SELECT * FROM foodgroups WHERE foodgroups.id NOT IN (SELECT DISTINCT(ingredients.food_group_id) FROM ingredients JOIN requires ON ingredients.id = requires.ingredient_id
+JOIN chefs_recipes_episode ON requires.recipe_id = chefs_recipes_episode.recipe_id);
+/*End of question 3.15*/
