@@ -112,9 +112,9 @@ JOIN chefs_recipes_episode ON recipe_theme.recipe_id = chefs_recipes_episode.rec
 GROUP BY themes.name
 ORDER BY Participation DESC
 LIMIT 1;
-/*End of question 3.14. 
+/*End of question 3.14. */
 
-/*script i used to validate the answer, looks for "quick and easy" theme(shows up if you remove LIMIT 1) id and checks participation in eps: */
+
 select * from themes;
 SELECT * FROM recipe_theme;
 SELECT COUNT(*) FROM chefs_recipes_episode;
