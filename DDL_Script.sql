@@ -60,6 +60,8 @@ CREATE TABLE Chefs (
     /* Age should be returned at the time of query based on birth date. */
     work_experience TINYINT,
     prof_certification TINYINT NOT NULL,
+    image_id INT,
+    FOREIGN KEY (image_id) REFERENCES Images(id),
     CONSTRAINT chk_work_experience CHECK (work_experience >= 0),
     CONSTRAINT chk_prof_certification CHECK (prof_certification BETWEEN 0 AND 5 AND NOT NULL)
 );
