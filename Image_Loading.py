@@ -25,9 +25,28 @@ with open("Recipes.json", "r", encoding="utf-8") as f1:
                 if file.startswith("Recipe_" + str(i)):
                     needed_image = file
                     break
+            print(needed_image)
             image_path = os.path.join(search_path + "\\" + needed_image).replace("\\","\\\\")
-            cursor.execute(f"INSERT INTO Images (image,descr) VALUES (LOAD_FILE('{image_path}') , '{recipes_info[i-1]['name']}');")
+            cursor.execute(f"INSERT INTO Images (id,image,descr) VALUES ({i},LOAD_FILE('{image_path}') , '{recipes_info[i-1]['name']}');")
+        mydb.commit()
+        for i in range(1, len(recipes_info) + 1):
             cursor.execute(f"UPDATE Recipes SET image_id = {i} WHERE id = {i};")
+        mydb.commit()
+        image_path = os.path.join(search_path + "\\chefAvatar.png").replace("\\","\\\\")
+        cursor.execute(f"INSERT INTO Images (image,descr) VALUES (LOAD_FILE('{image_path}') , 'Chef Avatar');")
+        mydb.commit()
+        image_id = len(recipes_info) + 1
+        cursor.execute(f"UPDATE Chefs SET image_id = {image_id};")
+        image_path = os.path.join(search_path + "\\ingredientPlaceholder.png").replace("\\","\\\\")
+        cursor.execute(f"INSERT INTO Images (image,descr) VALUES (LOAD_FILE('{image_path}') , 'Ingredient Placeholder');")
+        mydb.commit()
+        image_id += 1
+        cursor.execute(f"UPDATE Ingredients SET image_id = {image_id};")
+        image_path = os.path.join(search_path + "\\EpisodePlaceholder.jpg").replace("\\","\\\\")
+        cursor.execute(f"INSERT INTO Images (image,descr) VALUES (LOAD_FILE('{image_path}') , 'Episode Placeholder');")
+        mydb.commit()
+        image_id += 1
+        cursor.execute(f"UPDATE Episodes SET image_id = {image_id};")
         mydb.commit()
         cursor.close()
     except Exception as e:
