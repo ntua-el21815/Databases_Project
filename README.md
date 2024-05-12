@@ -10,7 +10,7 @@ have to pull the repo.
 To set up the database:
 0) Make sure you are running mysql version >= 8.0.
 1) Make sure you have python (version 3.10) installed.
-2) Install via pip (pip install mysql-connector-python == 8.0.28) mysqlconnector for python.
+2) Install via pip (pip install mysql-connector-python==8.0.28) mysqlconnector for python.
 3) Give (.\Images) folder priviliges to NETOWRK SERVICE to use Image_Loading.py
 Right click on folder Images -> properties -> Security.
 (See below)
