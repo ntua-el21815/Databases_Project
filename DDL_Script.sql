@@ -330,17 +330,6 @@ CREATE TABLE chefs_recipes_episode (
     recipe_id INT NOT NULL,
     /* The triplet (episode_id, chef_id, recipe_id) must be unique */
     CONSTRAINT chk_unique_participation UNIQUE (episode_id, chef_id, recipe_id),
-    /* A chef must not participate in three consecutive episodes */
-   /* CONSTRAINT chk_consecutive_episodes CHECK ( 
-        (SELECT COUNT(*) FROM chefs_recipes_episode
-        WHERE chef_id = chef_id
-        AND (
-            episode_id = episode_id - 1
-            OR episode_id = episode_id - 2
-            OR episode_id = episode_id - 3
-        )
-        ) < 3
-    ),remember to make this trigger*/
     FOREIGN KEY (episode_id) REFERENCES Episodes(id),
     FOREIGN KEY (chef_id) REFERENCES Chefs(id),
     FOREIGN KEY (recipe_id) REFERENCES Recipes(id)
@@ -352,20 +341,10 @@ CREATE TABLE is_judge (
     episode_id INT NOT NULL,
     /* A chef can't be a judge in the same episode twice */
     CONSTRAINT chk_judge UNIQUE (judge_id, episode_id),
-    /* A chef must not be chosen for three consecutive episodes */
-    /*CONSTRAINT chk_consecutive_episodes CHECK (
-        (SELECT COUNT(*) FROM is_judge
-        WHERE judge_id = judge_id
-        AND (
-            episode_id = episode_id - 1
-            OR episode_id = episode_id - 2
-            OR episode_id = episode_id - 3
-        )
-        ) < 3
-    ),remember to make this a trigger*/
     FOREIGN KEY (judge_id) REFERENCES Chefs(id),
     FOREIGN KEY (episode_id) REFERENCES Episodes(id)
 );
+
 
 DELIMITER //
 
@@ -380,10 +359,6 @@ FOR EACH ROW
 BEGIN
     SET NEW.calories = calculate_calories(NEW.recipe_id);
 END //
-
-DELIMITER ;
-
-DELIMITER //
 
 /* Trigger to set the winner of an episode based on the ratings */
 CREATE TRIGGER `SetEpisodeWinner` AFTER INSERT ON `rates`
@@ -403,10 +378,6 @@ BEGIN
     WHERE id = NEW.episode_id;
 END //
 
-DELIMITER ;
-
-DELIMITER //
-
 CREATE TRIGGER `FixEpisodeWinner` AFTER UPDATE ON `rates`
 FOR EACH ROW
 BEGIN
@@ -424,10 +395,6 @@ BEGIN
     WHERE id = NEW.episode_id;
 END //
 
-DELIMITER ;
-
-DELIMITER //
-
 CREATE TRIGGER `SetEpisodeCuisine` AFTER INSERT ON `chefs_recipes_episode`
 FOR EACH ROW
 BEGIN
@@ -442,6 +409,115 @@ BEGIN
 
     INSERT INTO episode_cuisines (episode_id, cuisine_id)
     VALUES (NEW.episode_id, cus_id);
+END //
+
+
+CREATE TRIGGER `CheckParticipation` BEFORE INSERT ON `chefs_recipes_episode`
+FOR EACH ROW
+BEGIN
+    DECLARE new_cuisine_id INT;
+    SELECT cuisine_id INTO new_cuisine_id
+    FROM Recipes
+    WHERE id = NEW.recipe_id;
+    /*Check if a chef has taken part in the 3 previous episodes */
+    IF (
+        SELECT COUNT(*) FROM chefs_recipes_episode 
+        WHERE chef_id = NEW.chef_id
+        AND episode_id IN
+        (
+            new.episode_id - 1,
+            new.episode_id - 2,
+            new.episode_id - 3,
+            new.episode_id - 4
+        )
+    ) > 3 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'A chef can only participate in 3 consecutive episodes';
+    END IF;
+    /* Check if a recipe has been used in the 3 previous episodes */
+    IF (
+        SELECT COUNT(*) FROM chefs_recipes_episode
+        WHERE recipe_id = NEW.recipe_id
+        AND episode_id IN
+        (
+            new.episode_id - 1,
+            new.episode_id - 2,
+            new.episode_id - 3,
+            new.episode_id - 4
+        )
+    ) > 3 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'A recipe can only be used in 3 consecutive episodes';
+    END IF;
+    /* Check if a judge has taken part as judge in the 3 previous episodes */
+    IF (
+        SELECT COUNT(*) FROM is_judge
+        WHERE judge_id = NEW.chef_id
+        AND episode_id IN
+        (
+            new.episode_id - 1,
+            new.episode_id - 2,
+            new.episode_id - 3,
+            new.episode_id - 4
+        )
+    ) >=3 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'A chef can only be a judge in 3 consecutive episodes';
+    END IF;
+END //
+
+
+CREATE TRIGGER `CheckParticipationOnUpdate` BEFORE UPDATE ON `chefs_recipes_episode`
+FOR EACH ROW
+BEGIN
+    DECLARE new_cuisine_id INT;
+    SELECT cuisine_id INTO new_cuisine_id
+    FROM Recipes
+    WHERE id = NEW.recipe_id;
+    IF (
+        SELECT COUNT(*) FROM chefs_recipes_episode 
+        WHERE chef_id = NEW.chef_id
+        AND episode_id IN
+        (
+            new.episode_id - 1,
+            new.episode_id - 2,
+            new.episode_id - 3,
+            new.episode_id - 4
+        )
+    ) > 3 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'A chef can only participate in 3 consecutive episodes';
+    END IF;
+    /* Check if a recipe has been used in the 3 previous episodes */
+    IF (
+        SELECT COUNT(*) FROM chefs_recipes_episode
+        WHERE recipe_id = NEW.recipe_id
+        AND episode_id IN
+        (
+            new.episode_id - 1,
+            new.episode_id - 2,
+            new.episode_id - 3,
+            new.episode_id - 4
+        )
+    ) > 3 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'A recipe can only be used in 3 consecutive episodes';
+    END IF;
+    /* Check if a judge has taken part as judge in the 3 previous episodes */
+    IF (
+        SELECT COUNT(*) FROM is_judge
+        WHERE judge_id = NEW.chef_id
+        AND episode_id IN
+        (
+            new.episode_id - 1,
+            new.episode_id - 2,
+            new.episode_id - 3,
+            new.episode_id - 4
+        )
+    ) > 3 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'A chef can only be a judge in 3 consecutive episodes';
+    END IF;
 END //
 
 DELIMITER ;
