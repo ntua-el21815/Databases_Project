@@ -21,6 +21,9 @@ if __name__ == "__main__":
     last_3_chefs = {0: [] , 1: [], 2: []}
     last_3_judges = {0: [] , 1: [], 2: []}
     for year in range(STARTING_YEAR, ENDING_YEAR):
+        diff = year - STARTING_YEAR
+        diff = diff % 2
+        persistent_chefs = []
         for episode in range(1, SEASON_EPISODES + 1):
             mycursor.execute("INSERT INTO Episodes (episode_number,year_played) VALUES (%s, %s)", (episode,year))
             episode_id = mycursor.lastrowid
@@ -38,7 +41,16 @@ if __name__ == "__main__":
                 chefs = [x for x in chefs if x not in avoid_chefs]
                 if len(chefs) == 0:
                     continue
-                chef = random.choice(chefs)
+                if chosen_chefs < 5:
+                    chef = random.choice(chefs)
+                else:
+                    if len(persistent_chefs) == 0:
+                        chef = random.choice(chefs)
+                    else:
+                        if random.randint(0, 1) == 0:
+                            chef = random.choice(chefs)
+                        else:
+                            chef = random.choice(persistent_chefs)
                 if chef in contestants:
                     continue
                 mycursor.execute("SELECT recipe_id FROM chef_recipes WHERE chef_id = %s", chef)
@@ -67,6 +79,7 @@ if __name__ == "__main__":
             last_3_rec[0] = last_3_rec[1]
             last_3_rec[1] = last_3_rec[2]
             last_3_rec[2] = recipes_used
+            persistent_chefs += last_3_chefs[0][0 : len(last_3_chefs[0])//2]
             last_3_chefs[0] = last_3_chefs[1]
             last_3_chefs[1] = last_3_chefs[2]
             last_3_chefs[2] = contestants
