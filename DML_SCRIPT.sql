@@ -2291,7 +2291,7 @@ INSERT INTO kitchenware_for_recipe (recipe_id, kitchenware_id) VALUES (53, 73);
 INSERT INTO Cuisines (country_name) VALUES ('Albanian');
 INSERT INTO dietaryinfo (recipe_id, fat_content, protein_content, hydrocarbon_content) VALUES (53, 20, 22, 48);
 INSERT INTO Recipes (name, short_desc , recipe_type, difficulty_level, TIP1 ,TIP2 ,TIP3, prep_time, cook_time, cuisine_id) VALUES ('Albanian Fërgesë', 'Traditional Albanian dish featuring baked peppers, tomatoes, onions, and feta cheese, seasoned with herbs and served hot with crusty bread.', 'gastronomy', '2', 'Roast peppers until charred, then peel off the skin for a smoky flavor and tender texture.', 'Sauté onions and tomatoes until softened before combining with roasted peppers and feta cheese for a rich and savory filling.', 'Bake Fërgesë until bubbly and golden brown on top, then garnish with chopped parsley for freshness before serving.', '00:30:00', '00:45:00', 26);
-INSERT INTO requires (recipe_id, ingredient_id, quantity, num_units, main_ingredient) VALUES (54, 69, '500g', 390, 0);
+INSERT INTO requires (recipe_id, ingredient_id, quantity, num_units, main_ingredient) VALUES (54, 69, '500g', 390, 1);
 INSERT INTO Ingredients (food_group_id, name, calories_per_100_units) VALUES (1, 'Bamboo Shoots', 27);
 INSERT INTO requires (recipe_id, ingredient_id, quantity, num_units, main_ingredient) VALUES (54, 262, '1/2 cup', 363, 0);
 INSERT INTO Ingredients (food_group_id, name, calories_per_100_units) VALUES (1, 'Water Chestnuts', 24);
@@ -2949,6 +2949,7 @@ INSERT INTO chef_recipes (chef_id, recipe_id) VALUES (70, 24);
 INSERT INTO chef_recipes (chef_id, recipe_id) VALUES (70, 45);
 INSERT INTO chef_recipes (chef_id, recipe_id) VALUES (70, 28);
 
+/*
 INSERT INTO Episodes (episode_number, year_played) VALUES (1, 2018);
 INSERT INTO chefs_recipes_episode (episode_id, recipe_id, chef_id) VALUES (1, 8, 12);
 INSERT INTO chefs_recipes_episode (episode_id, recipe_id, chef_id) VALUES (1, 44, 20);
@@ -6098,4 +6099,4 @@ INSERT INTO rates (episode_id,judge_id,contestant_id,score) VALUES (70, 41, 20, 
 INSERT INTO rates (episode_id,judge_id,contestant_id,score) VALUES (70, 69, 43, 3);
 INSERT INTO rates (episode_id,judge_id,contestant_id,score) VALUES (70, 60, 43, 5);
 INSERT INTO rates (episode_id,judge_id,contestant_id,score) VALUES (70, 41, 43, 2);
-
+*/
