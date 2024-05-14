@@ -5,7 +5,9 @@ SELECT * FROM images;
 
 SELECT * FROM dietaryinfo;
 
-SELECT * FROM recipes;
+SELECT * FROM themes;
+
+SELECT * FROM cuisines;
 
 SELECT recipes.id,recipes.name AS 'Recipe Name',ingredients.name AS 'Main Ingredient' FROM recipes JOIN requires JOIN ingredients
 	WHERE recipes.id = requires.recipe_id AND requires.ingredient_id = ingredients.id AND requires.main_ingredient = 1;
@@ -24,7 +26,13 @@ SELECT age(birth_date) AS 'Age' FROM chefs;
 
 SELECT recipes.name,images.image FROM recipes JOIN images WHERE recipes.image_id = images.id OR recipes.image_id IS NULL;
 
-SELECT * FROM images;
+SELECT chefs.name,images.image FROM chefs JOIN images WHERE chefs.image_id = images.id OR chefs.image_id IS NULL;
+
+SELECT episodes.year_played,episodes.episode_number,images.image FROM episodes JOIN images WHERE episodes.image_id = images.id;
+
+SELECT ingredients.name,images.image FROM ingredients JOIN images WHERE ingredients.image_id = images.id OR ingredients.image_id IS NULL;
+
+SELECT * FROM episodes;
 
 SET SQL_SAFE_UPDATES = 0;
 
@@ -33,6 +41,7 @@ SHOW VARIABLES LIKE 'secure_file_priv';
 GRANT FILE ON *.* TO 'root'@'localhost';
 
 DELETE FROM Images;
+UPDATE Recipes SET image_id = NULL;
 
 SELECT * FROM chefs_recipes_episode;
 
@@ -40,6 +49,8 @@ SELECT episodes.year_played,episodes.episode_number,cuisines.country_name
 	FROM episode_cuisines JOIN episodes JOIN cuisines 
 	WHERE episode_cuisines.episode_id = episodes.id AND episode_cuisines.cuisine_id = cuisines.id
     ORDER BY year_played,episode_number ASC;
+    
+
 /* End of Random Queries */
 
 /* Question 3.1 */
@@ -80,8 +91,9 @@ SELECT year_played AS Year,chefs.id AS 'Chef id',chefs.name,chefs.surname,COUNT(
     FROM chefs JOIN chefs_recipes_episode JOIN is_judge JOIN episodes
     WHERE chefs.id = chefs_recipes_episode.chef_id AND chefs.id = is_judge.judge_id AND chefs_recipes_episode.episode_id = episodes.id
     GROUP BY year_played,chefs.id
-    HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) > 3
+    HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) > 2
     ORDER BY Year,Episodes DESC;
+/*This query broke because of the constraint of 3 consecutive episodes.WHAT SHOULD WE DO? */
 /* End of Question 3.5 */
 
 /*Question 3.7*/
@@ -95,7 +107,7 @@ HAVING Participation <= (SELECT MAX(Participation) - 5 FROM (
         GROUP BY 
             chef_id
     ) AS Subquery)
-ORDER BY id;
+ORDER BY Participation DESC;
 /*End of question 3.7*/
 
 /*Question 3.9*/
