@@ -9,6 +9,8 @@ SELECT * FROM themes;
 
 SELECT * FROM cuisines;
 
+SELECT  * FROM chefs;
+
 SELECT recipes.id,recipes.name AS 'Recipe Name',ingredients.name AS 'Main Ingredient' FROM recipes JOIN requires JOIN ingredients
 	WHERE recipes.id = requires.recipe_id AND requires.ingredient_id = ingredients.id AND requires.main_ingredient = 1;
     
@@ -91,13 +93,14 @@ SELECT year_played AS Year,chefs.id AS 'Chef id',chefs.name,chefs.surname,COUNT(
     FROM chefs JOIN chefs_recipes_episode JOIN is_judge JOIN episodes
     WHERE chefs.id = chefs_recipes_episode.chef_id AND chefs.id = is_judge.judge_id AND chefs_recipes_episode.episode_id = episodes.id
     GROUP BY year_played,chefs.id
-    HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) > 2
+    HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) > 3
     ORDER BY Year,Episodes DESC;
 /*This query broke because of the constraint of 3 consecutive episodes.WHAT SHOULD WE DO? */
+/*Fixed it by adding some persistent chefs in the Script of random episode Generation.*/
 /* End of Question 3.5 */
 
 /*Question 3.7*/
-SELECT DISTINCT chefs.id,chefs.name,chefs.surname,(SELECT COUNT(*) FROM chefs_recipes_episode WHERE chefs_recipes_episode.chef_id = chefs.id) AS Participation
+SELECT DISTINCT chefs.id AS "Chef ID",chefs.name AS "Chef's Name",chefs.surname AS "Chef's Surname",(SELECT COUNT(*) FROM chefs_recipes_episode WHERE chefs_recipes_episode.chef_id = chefs.id) AS Participation
 FROM chefs JOIN chefs_recipes_episode ON chefs.id = chefs_recipes_episode.chef_id
 HAVING Participation <= (SELECT MAX(Participation) - 5 FROM (
         SELECT 
@@ -111,14 +114,14 @@ ORDER BY Participation DESC;
 /*End of question 3.7*/
 
 /*Question 3.9*/
-SELECT episodes.year_played,AVG(dietaryinfo.hydrocarbon_content) AS AvgHydrocarbon
+SELECT episodes.year_played AS "Year",AVG(dietaryinfo.hydrocarbon_content) AS AvgHydrocarbon
 FROM episodes JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id
 JOIN dietaryinfo ON chefs_recipes_episode.recipe_id = dietaryinfo.recipe_id
 GROUP BY episodes.year_played;
 /*End of question 3.9*/
 
 /*Question 3.14*/
-SELECT themes.name,COUNT(*) AS Participation
+SELECT themes.name AS "Theme",COUNT(*) AS Participation
 FROM themes JOIN recipe_theme ON themes.id = recipe_theme.theme_id 
 JOIN chefs_recipes_episode ON recipe_theme.recipe_id = chefs_recipes_episode.recipe_id
 GROUP BY themes.name
@@ -132,6 +135,6 @@ SELECT * FROM recipe_theme;
 SELECT COUNT(*) FROM chefs_recipes_episode;
 
 /*Question 3.15*/
-SELECT * FROM foodgroups WHERE foodgroups.id NOT IN (SELECT DISTINCT(ingredients.food_group_id) FROM ingredients JOIN requires ON ingredients.id = requires.ingredient_id
+SELECT name AS Name,descr AS Description FROM foodgroups WHERE foodgroups.id NOT IN (SELECT DISTINCT(ingredients.food_group_id) FROM ingredients JOIN requires ON ingredients.id = requires.ingredient_id
 JOIN chefs_recipes_episode ON requires.recipe_id = chefs_recipes_episode.recipe_id);
 /* End of question 3.15*/
