@@ -27,6 +27,7 @@ have to locate MYSQL 80 Service (In Windows Task Manager),right click it,then go
 9) In powershell set $Env:MYSQL_KEY = "your_password" as the root password for mysql connection.
    Example : $Env:MYSQL_KEY = "123456789" (Required for Image Loading and Episode Generation Script to work.)
 11) Run python .\Image_Loading.py (To load the images to the database.)
+12) If yow want to generate additional episodes run python .\One_Episode_Gen.py,to generate one episode at a time. (mysqlconnector mentioned above is a prerequisite).
 
 
 Notes:
