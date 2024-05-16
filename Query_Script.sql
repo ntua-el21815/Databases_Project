@@ -32,6 +32,10 @@ SELECT recipes.name,images.image FROM recipes JOIN images WHERE recipes.image_id
 
 SELECT chefs.name,images.image FROM chefs JOIN images WHERE chefs.image_id = images.id OR chefs.image_id IS NULL;
 
+SELECT themes.name,images.image FROM themes JOIN images WHERE themes.image_id = images.id OR themes.image_id IS NULL;
+
+SELECT foodgroups.name,images.image FROM foodgroups JOIN images WHERE foodgroups.image_id = images.id OR foodgroups.image_id IS NULL;
+
 SELECT episodes.year_played,episodes.episode_number,images.image FROM episodes JOIN images WHERE episodes.image_id = images.id;
 
 SELECT ingredients.name,images.image FROM ingredients JOIN images WHERE ingredients.image_id = images.id OR ingredients.image_id IS NULL;
