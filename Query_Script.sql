@@ -3,9 +3,15 @@ USE cookingcontest;
 /* Random Queries to validate stuff */
 SELECT * FROM images;
 
+SELECT * FROM is_judge;
+
 SELECT * FROM dietaryinfo;
 
-SELECT * FROM recipes;
+SELECT * FROM themes;
+
+SELECT * FROM cuisines;
+
+SELECT  * FROM chefs;
 
 SELECT recipes.id,recipes.name AS 'Recipe Name',ingredients.name AS 'Main Ingredient' FROM recipes JOIN requires JOIN ingredients
 	WHERE recipes.id = requires.recipe_id AND requires.ingredient_id = ingredients.id AND requires.main_ingredient = 1;
@@ -24,7 +30,17 @@ SELECT age(birth_date) AS 'Age' FROM chefs;
 
 SELECT recipes.name,images.image FROM recipes JOIN images WHERE recipes.image_id = images.id OR recipes.image_id IS NULL;
 
-SELECT * FROM images;
+SELECT chefs.name,images.image FROM chefs JOIN images WHERE chefs.image_id = images.id OR chefs.image_id IS NULL;
+
+SELECT themes.name,images.image FROM themes JOIN images WHERE themes.image_id = images.id OR themes.image_id IS NULL;
+
+SELECT foodgroups.name,images.image FROM foodgroups JOIN images WHERE foodgroups.image_id = images.id OR foodgroups.image_id IS NULL;
+
+SELECT episodes.year_played,episodes.episode_number,images.image FROM episodes JOIN images WHERE episodes.image_id = images.id;
+
+SELECT ingredients.name,images.image FROM ingredients JOIN images WHERE ingredients.image_id = images.id OR ingredients.image_id IS NULL;
+
+SELECT * FROM episodes;
 
 SET SQL_SAFE_UPDATES = 0;
 
@@ -33,6 +49,7 @@ SHOW VARIABLES LIKE 'secure_file_priv';
 GRANT FILE ON *.* TO 'root'@'localhost';
 
 DELETE FROM Images;
+UPDATE Recipes SET image_id = NULL;
 
 SELECT * FROM chefs_recipes_episode;
 
@@ -40,23 +57,48 @@ SELECT episodes.year_played,episodes.episode_number,cuisines.country_name
 	FROM episode_cuisines JOIN episodes JOIN cuisines 
 	WHERE episode_cuisines.episode_id = episodes.id AND episode_cuisines.cuisine_id = cuisines.id
     ORDER BY year_played,episode_number ASC;
+
+/* 3.14 Validation */
+
+select * from themes;
+SELECT * FROM recipe_theme;
+SELECT COUNT(*) FROM chefs_recipes_episode;
+
 /* End of Random Queries */
 
 /* Question 3.1 */
-SELECT AVG(score) AS Average,chefs.name AS 'Cook Name',chefs.surname AS 'Cook Surname' FROM rates JOIN chefs WHERE chefs.id = rates.contestant_id GROUP BY contestant_id ORDER BY Average DESC;
+SELECT AVG(score) AS Average,chefs.name AS 'Cook Name',chefs.surname AS 'Cook Surname' 
+	FROM rates 
+    JOIN chefs ON chefs.id = rates.contestant_id 
+    GROUP BY contestant_id 
+    ORDER BY Average DESC;
 
-SELECT AVG(score) AS Average,cuisines.country_name AS 'Cuisine' FROM rates JOIN chefs_recipes_episode JOIN recipes JOIN cuisines WHERE recipes.id = chefs_recipes_episode.recipe_id AND rates.contestant_id = chefs_recipes_episode.chef_id AND cuisines.id = recipes.cuisine_id GROUP BY cuisine_id ORDER BY Average DESC;
+SELECT AVG(score) AS Average,cuisines.country_name AS 'Cuisine' 
+	FROM rates 
+    JOIN chefs_recipes_episode ON rates.contestant_id = chefs_recipes_episode.chef_id 
+    JOIN recipes ON recipes.id = chefs_recipes_episode.recipe_id 
+    JOIN cuisines ON cuisines.id = recipes.cuisine_id 
+    GROUP BY cuisine_id 
+    ORDER BY Average DESC;
 /* End of Question 3.1 */
 
 /* Question 3.2 */
-SELECT episodes.year_played,cuisines.country_name,chefs.name,chefs.surname 
-	FROM episodes JOIN chefs_recipes_episode JOIN chefs JOIN recipes JOIN cuisines JOIN specialises_in 
-	WHERE episodes.id = chefs_recipes_episode.episode_id AND cuisines.id = recipes.cuisine_id AND recipes.id = chefs_recipes_episode.recipe_id AND recipes.cuisine_id = specialises_in.cuisine_id AND chefs.id = specialises_in.chef_id 
+SELECT episodes.year_played AS Year,cuisines.country_name AS Cuisine,chefs.name AS "Name",chefs.surname AS "Surname"
+	FROM episodes 
+    JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id 
+    JOIN recipes ON recipes.id = chefs_recipes_episode.recipe_id
+    JOIN cuisines ON cuisines.id = recipes.cuisine_id
+    JOIN specialises_in ON recipes.cuisine_id = specialises_in.cuisine_id
+    JOIN chefs ON chefs.id = specialises_in.chef_id 
 	GROUP BY year_played,cuisines.id,chefs.id 
     ORDER BY year_played;
-SELECT episodes.year_played,cuisines.country_name,chefs.name,chefs.surname 
-	FROM episodes JOIN chefs_recipes_episode JOIN chefs JOIN recipes JOIN cuisines 
-    WHERE episodes.id = chefs_recipes_episode.episode_id AND cuisines.id = recipes.cuisine_id AND recipes.id = chefs_recipes_episode.recipe_id AND chefs_recipes_episode.chef_id = chefs.id 
+
+SELECT episodes.year_played AS Year,cuisines.country_name AS Cuisine,chefs.name AS "Name",chefs.surname AS "Surname"
+	FROM episodes 
+    JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id
+    JOIN chefs ON chefs_recipes_episode.chef_id = chefs.id 
+    JOIN recipes ON recipes.id = chefs_recipes_episode.recipe_id
+    JOIN cuisines ON cuisines.id = recipes.cuisine_id
     GROUP BY year_played,cuisines.id,chefs.id 
     ORDER BY year_played;
 /* End of Question 3.2 */
@@ -66,7 +108,9 @@ SELECT chefs.name AS 'Chef Name', chefs.surname AS 'Chef Surname', age(chefs.bir
     (
         SELECT COUNT(*) FROM chef_recipes WHERE chef_recipes.chef_id = chefs.id
     ) AS Recipes
-FROM chefs WHERE age(birth_date) < 30 ORDER BY Recipes DESC;
+	FROM chefs 
+    HAVING Age < 30 
+    ORDER BY Recipes DESC;
 /* End of Question 3.3 */
 
 /* Question 3.4 */
@@ -77,17 +121,21 @@ SELECT * FROM chefs WHERE id NOT IN (SELECT DISTINCT(judge_id) FROM is_judge);
 /* Selecting all the judges that have been in the same number of episodes and have been
 in at least 3 episodes within a specific year */
 SELECT year_played AS Year,chefs.id AS 'Chef id',chefs.name,chefs.surname,COUNT(DISTINCT chefs_recipes_episode.episode_id) 'Episodes' 
-    FROM chefs JOIN chefs_recipes_episode JOIN is_judge JOIN episodes
-    WHERE chefs.id = chefs_recipes_episode.chef_id AND chefs.id = is_judge.judge_id AND chefs_recipes_episode.episode_id = episodes.id
-    GROUP BY year_played,chefs.id
+    FROM chefs 
+    JOIN chefs_recipes_episode ON chefs.id = chefs_recipes_episode.chef_id 
+    JOIN is_judge ON chefs.id = is_judge.judge_id
+    JOIN episodes ON chefs_recipes_episode.episode_id = episodes.id
+    GROUP BY Year,chefs.id
     HAVING COUNT(DISTINCT chefs_recipes_episode.episode_id) > 3
     ORDER BY Year,Episodes DESC;
+/*This query broke because of the constraint of 3 consecutive episodes.WHAT SHOULD WE DO? */
+/*Fixed it by adding some persistent chefs in the Script of random episode Generation.*/
 /* End of Question 3.5 */
 
 /*Question 3.7*/
-SELECT DISTINCT chefs.id,chefs.name,chefs.surname,(SELECT COUNT(*) FROM chefs_recipes_episode WHERE chefs_recipes_episode.chef_id = chefs.id) AS Participation
-FROM chefs JOIN chefs_recipes_episode ON chefs.id = chefs_recipes_episode.chef_id
-HAVING Participation <= (SELECT MAX(Participation) - 5 FROM (
+SELECT DISTINCT chefs.id AS "Chef ID",chefs.name AS "Chef's Name",chefs.surname AS "Chef's Surname",(SELECT COUNT(*) FROM chefs_recipes_episode WHERE chefs_recipes_episode.chef_id = chefs.id) AS Participation
+	FROM chefs JOIN chefs_recipes_episode ON chefs.id = chefs_recipes_episode.chef_id
+	HAVING Participation <= (SELECT MAX(Participation) - 5 FROM (
         SELECT 
             COUNT(chef_id) AS Participation
         FROM 
@@ -95,31 +143,29 @@ HAVING Participation <= (SELECT MAX(Participation) - 5 FROM (
         GROUP BY 
             chef_id
     ) AS Subquery)
-ORDER BY id;
+	ORDER BY Participation DESC;
 /*End of question 3.7*/
 
 /*Question 3.9*/
-SELECT episodes.year_played,AVG(dietaryinfo.hydrocarbon_content) AS AvgHydrocarbon
-FROM episodes JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id
-JOIN dietaryinfo ON chefs_recipes_episode.recipe_id = dietaryinfo.recipe_id
-GROUP BY episodes.year_played;
+SELECT episodes.year_played AS "Year",AVG(dietaryinfo.hydrocarbon_content) AS AvgHydrocarbon
+	FROM episodes JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id
+	JOIN dietaryinfo ON chefs_recipes_episode.recipe_id = dietaryinfo.recipe_id
+	GROUP BY episodes.year_played;
 /*End of question 3.9*/
 
 /*Question 3.14*/
-SELECT themes.name,COUNT(*) AS Participation
-FROM themes JOIN recipe_theme ON themes.id = recipe_theme.theme_id 
-JOIN chefs_recipes_episode ON recipe_theme.recipe_id = chefs_recipes_episode.recipe_id
-GROUP BY themes.name
-ORDER BY Participation DESC
-LIMIT 1;
-/*End of question 3.14. 
-script i used to validate the answer, looks for "quick and easy" theme(shows up if you remove LIMIT 1) id and checks participation in eps: 
-select * from themes;
-SELECT* FROM recipe_theme WHERE theme_id LIKE 21;
-SELECT* FROM chefs_recipes_episode WHERE recipe_id LIKE 24 OR recipe_id LIKE 25;
-*/
+SELECT themes.name AS "Theme",COUNT(*) AS Participation
+	FROM themes JOIN recipe_theme ON themes.id = recipe_theme.theme_id 
+	JOIN chefs_recipes_episode ON recipe_theme.recipe_id = chefs_recipes_episode.recipe_id
+	GROUP BY themes.name
+	ORDER BY Participation DESC
+	LIMIT 1;
+/*End of question 3.14. */
 
 /*Question 3.15*/
-SELECT * FROM foodgroups WHERE foodgroups.id NOT IN (SELECT DISTINCT(ingredients.food_group_id) FROM ingredients JOIN requires ON ingredients.id = requires.ingredient_id
-JOIN chefs_recipes_episode ON requires.recipe_id = chefs_recipes_episode.recipe_id);
-/*End of question 3.15*/
+SELECT name AS Name,descr AS Description FROM foodgroups 
+	WHERE foodgroups.id NOT IN (SELECT DISTINCT(ingredients.food_group_id) 
+    FROM ingredients 
+    JOIN requires ON ingredients.id = requires.ingredient_id
+	JOIN chefs_recipes_episode ON requires.recipe_id = chefs_recipes_episode.recipe_id);
+/* End of question 3.15*/

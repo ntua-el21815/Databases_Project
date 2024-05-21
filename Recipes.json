@@ -2548,7 +2548,7 @@
         "theme": "Asian Fusion",
         "meal_types": ["Appetizer", "Dim Sum"],
         "tags" : ["chinese-food", "seafood", "asian-food"],
-        "main_ingredient" : "Shrimp (Peeled and Deveined)",
+        "main_ingredient" : "Shrimp",
         "ingredients": [
         ["Shrimp", "Seafood", 99, "500g"],
         ["Bamboo Shoots", "Vegetables", 27, "1/2 cup"],
