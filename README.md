@@ -18,21 +18,12 @@ To set up the database: <br>
 1) Make sure you are running mysql version >= 8.0.
 2) Make sure you have python (version 3.10) installed.
 3) Install via pip (pip install mysql-connector-python==8.0.28) mysqlconnector for python.
-4) Give (.\Images) folder priviliges to NETOWRK SERVICE to use Image_Loading.py
-Right click on folder Images -> properties -> Security -> (Enter NETWORK SERVICE in field Enter the object name to select).
-Note : The NETWORK SERVICE username might be different on your machine.To check its exact name you
-have to locate MYSQL 80 Service (In Windows Task Manager),right click it,then go to details,there you will find its username which is needed.
-(See below) <br>
-![Add network service to folder Security menu in Windows.](NETWORKSERVICE.jpg)
-5) Set Variable secure-file-priv in my.ini (in %PROGRAMDATA% -> Mysql -> MySqlServer -> MySql<Version> -> my.ini) to the directory in which the repo is stored \ Images 
-(e.g C:\\\\Users\\\\Some_User\\\\Documents\\\\Databases_Project\\\\Images) Note the double slashes \\\\ !
-6) Restart mysql Server (Stop Server -> Start Server) (If Stop Server Crashes then Restart Service MYSQL80)
-7) Run the DDL_Script.sql in mysql.
-8) Run the DML_SCRIPT.sql in mysql.
-9) In powershell run $Env:MYSQL_KEY = "your_password" as the root password for mysql connection.
+4) Run the DDL_Script.sql in mysql.
+5) Run the DML_SCRIPT.sql in mysql.
+6) In powershell run $Env:MYSQL_KEY = "your_password" as the root password for mysql connection.
    Example : $Env:MYSQL_KEY = "123456789" (Required for Image Loading and Episode Generation Script to work.Make sure you are in the directory the repo is stored in!)
-10) Run python .\Image_Loading.py (To load the images to the database.)
-11) If yow want to generate additional episodes run python .\One_Episode_Gen.py,to generate one episode at a time. (mysqlconnector mentioned above is a prerequisite).
+7) Run python .\Image_Loading.py (To load the images to the database.)
+8) If yow want to generate additional episodes run python .\One_Episode_Gen.py,to generate one episode at a time. (mysqlconnector mentioned above is a prerequisite).
 
 
 Notes:

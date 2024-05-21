@@ -28,19 +28,23 @@ with open("Recipes.json", "r", encoding="utf-8") as f1:
                     break
             print(needed_image)
             image_path = os.path.join(search_path + "\\" + needed_image).replace("\\","\\\\")
-            cursor.execute(f"INSERT INTO Images (id,image,descr) VALUES ({i},LOAD_FILE('{image_path}') , '{recipes_info[i-1]['name']}');")
+            hex_image = open(image_path, "rb").read()
+            cursor.execute(f"INSERT INTO Images (id,image,descr) VALUES ({i},x'{hex_image.hex()}','{recipes_info[i-1]['name']}');")
         for i in range(1, len(recipes_info) + 1):
             cursor.execute(f"UPDATE Recipes SET image_id = {i} WHERE id = {i};")
         image_path = os.path.join(search_path + "\\chefAvatar.png").replace("\\","\\\\")
-        cursor.execute(f"INSERT INTO Images (image,descr) VALUES (LOAD_FILE('{image_path}') , 'Chef Avatar');")
+        image_hex = open(image_path, "rb").read().hex()
+        cursor.execute(f"INSERT INTO Images (image,descr) VALUES (x'{image_hex}','Chef Avatar');")
         image_id = len(recipes_info) + 1
         cursor.execute(f"UPDATE Chefs SET image_id = {image_id};")
         image_path = os.path.join(search_path + "\\ingredientPlaceholder.png").replace("\\","\\\\")
-        cursor.execute(f"INSERT INTO Images (image,descr) VALUES (LOAD_FILE('{image_path}') , 'Ingredient Placeholder');")
+        image_hex = open(image_path, "rb").read().hex()
+        cursor.execute(f"INSERT INTO Images (image,descr) VALUES (x'{image_hex}','Ingredient Placeholder');")
         image_id += 1
         cursor.execute(f"UPDATE Ingredients SET image_id = {image_id};")
         image_path = os.path.join(search_path + "\\EpisodePlaceholder.jpg").replace("\\","\\\\")
-        cursor.execute(f"INSERT INTO Images (image,descr) VALUES (LOAD_FILE('{image_path}') , 'Episode Placeholder');")
+        image_hex = open(image_path, "rb").read().hex()
+        cursor.execute(f"INSERT INTO Images (image,descr) VALUES (x'{image_hex}','Episode Placeholder');")
         image_id += 1
         cursor.execute(f"UPDATE Episodes SET image_id = {image_id};")
         for i in range(1,38):
@@ -50,7 +54,8 @@ with open("Recipes.json", "r", encoding="utf-8") as f1:
                     image_path = os.path.join(search_path + "\\" + file).replace("\\","\\\\")
                     cursor.execute(f"SELECT name FROM Themes WHERE id = {i};")
                     theme_name = cursor.fetchone()[0]
-                    cursor.execute(f"INSERT INTO Images (image,descr) VALUES (LOAD_FILE('{image_path}') , '{theme_name}');")
+                    image_hex = open(image_path, "rb").read().hex()
+                    cursor.execute(f"INSERT INTO Images (image,descr) VALUES (x'{image_hex}','{theme_name}');")
                     image_id = cursor.lastrowid
                     cursor.execute(f"UPDATE Themes SET image_id = {image_id} WHERE id = {i};")
         for i in range(1, 12):
@@ -60,7 +65,8 @@ with open("Recipes.json", "r", encoding="utf-8") as f1:
                     image_path = os.path.join(search_path + "\\" + file).replace("\\","\\\\")
                     cursor.execute(f"SELECT name FROM FoodGroups WHERE id = {i};")
                     group_name = cursor.fetchone()[0]
-                    cursor.execute(f"INSERT INTO Images (image,descr) VALUES (LOAD_FILE('{image_path}') , '{group_name}');")
+                    image_hex = open(image_path, "rb").read().hex()
+                    cursor.execute(f"INSERT INTO Images (image,descr) VALUES (x'{image_hex}','{group_name}');")
                     image_id = cursor.lastrowid
                     cursor.execute(f"UPDATE FoodGroups SET image_id = {image_id} WHERE id = {i};")
         mydb.commit()
