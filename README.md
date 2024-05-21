@@ -25,7 +25,7 @@ have to locate MYSQL 80 Service (In Windows Task Manager),right click it,then go
 (See below) <br>
 ![Add network service to folder Security menu in Windows.](NETWORKSERVICE.jpg)
 5) Set Variable secure-file-priv in my.ini (in %PROGRAMDATA% -> Mysql -> MySqlServer -> MySql<Version> -> my.ini) to the directory in which the repo is stored \ Images 
-(e.g C:\\Users\\Some_User\\Documents\\Databases_Project\\Images) Note the double slashes \\ !
+(e.g C:\\\\Users\\\\Some_User\\\\Documents\\\\Databases_Project\\\\Images) Note the double slashes \\\\ !
 6) Restart mysql Server (Stop Server -> Start Server) (If Stop Server Crashes then Restart Service MYSQL80)
 7) Run the DDL_Script.sql in mysql.
 8) Run the DML_SCRIPT.sql in mysql.
