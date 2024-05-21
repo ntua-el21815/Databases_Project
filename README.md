@@ -16,7 +16,7 @@ To download our project (Three Options): <br>
 
 To set up the database: <br>
 1) Make sure you are running mysql version >= 8.0.
-2) Make sure you have python (version 3.10) installed.
+2) Make sure you have python (version >= 3.10) installed.
 3) Install via pip (pip install mysql-connector-python==8.0.28) mysqlconnector for python.
 4) Run the DDL_Script.sql in mysql.
 5) Run the DML_SCRIPT.sql in mysql.
