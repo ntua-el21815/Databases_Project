@@ -132,6 +132,25 @@ SELECT year_played AS Year,chefs.id AS 'Chef id',chefs.name,chefs.surname,COUNT(
 /*Fixed it by adding some persistent chefs in the Script of random episode Generation.*/
 /* End of Question 3.5 */
 
+/* Question 3.6 */
+WITH RecipeTags AS (
+    SELECT r.id AS recipe_id, t.tag_name
+    FROM Recipes r
+    JOIN recipe_tags rt ON r.id = rt.recipe_id
+    JOIN Tags t ON rt.tag_id = t.id
+    JOIN chefs_recipes_episode cre ON r.id = cre.recipe_id
+), TagPairs AS (
+    SELECT rt1.recipe_id, rt1.tag_name AS tag1, rt2.tag_name AS tag2
+    FROM RecipeTags rt1
+    JOIN RecipeTags rt2 ON rt1.recipe_id = rt2.recipe_id AND rt1.tag_name < rt2.tag_name
+)
+
+select count(recipe_id) as counter,tag1,tag2 from TagPairs
+group by tag1,tag2
+order by counter desc
+limit 3;
+/* End of Question 3.6*/
+
 /*Question 3.7*/
 SELECT DISTINCT chefs.id AS "Chef ID",chefs.name AS "Chef's Name",chefs.surname AS "Chef's Surname",(SELECT COUNT(*) FROM chefs_recipes_episode WHERE chefs_recipes_episode.chef_id = chefs.id) AS Participation
 	FROM chefs JOIN chefs_recipes_episode ON chefs.id = chefs_recipes_episode.chef_id
@@ -146,12 +165,102 @@ SELECT DISTINCT chefs.id AS "Chef ID",chefs.name AS "Chef's Name",chefs.surname 
 	ORDER BY Participation DESC;
 /*End of question 3.7*/
 
+/*Question 3.8*/
+SELECT e.episode_number, COUNT(kfr.kitchenware_id) AS equipment_count
+FROM Episodes e
+JOIN chefs_recipes_episode cre ON e.id = cre.episode_id
+JOIN kitchenware_for_recipe kfr ON cre.recipe_id = kfr.recipe_id
+GROUP BY e.id
+ORDER BY equipment_count DESC
+LIMIT 1;
+/*End of question 3.8*/ 
+
+
+
 /*Question 3.9*/
 SELECT episodes.year_played AS "Year",AVG(dietaryinfo.hydrocarbon_content) AS AvgHydrocarbon
 	FROM episodes JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id
 	JOIN dietaryinfo ON chefs_recipes_episode.recipe_id = dietaryinfo.recipe_id
 	GROUP BY episodes.year_played;
 /*End of question 3.9*/
+
+/*Question 3.10*/
+WITH CuisineParticipation AS (
+    SELECT 
+        c.country_name,
+        e.year_played AS year,
+        COUNT(*) AS participation_count
+    FROM episodes e
+    JOIN chefs_recipes_episode cre ON e.id = cre.episode_id
+    JOIN Recipes r ON cre.recipe_id = r.id
+    JOIN Cuisines c ON r.cuisine_id = c.id
+    GROUP BY c.country_name, year_played
+    HAVING COUNT(*) >= 3
+),
+ConsecutiveYearParticipation AS (
+    SELECT 
+        cp1.country_name,
+        cp1.year AS year1,
+        cp1.participation_count AS count1,
+        cp2.year AS year2,
+        cp2.participation_count AS count2
+    FROM CuisineParticipation cp1
+    JOIN CuisineParticipation cp2 
+        ON cp1.country_name = cp2.country_name 
+        AND cp2.year = cp1.year + 1
+)
+SELECT 
+    country_name,
+    year1,
+    count1,
+    year2,
+    count2
+FROM ConsecutiveYearParticipation
+WHERE count1 = count2;
+/*End of Question 3.10
+
+/*Question 3.11*/
+SELECT 
+    j.name AS judge_name, 
+    j.surname AS judge_surname, 
+    c.name AS contestant_name, 
+    c.surname AS contestant_surname, 
+    SUM(r.score) AS total_score
+FROM 
+    rates r
+JOIN 
+    Chefs j ON r.judge_id = j.id
+JOIN 
+    Chefs c ON r.contestant_id = c.id
+GROUP BY 
+    r.judge_id, r.contestant_id
+ORDER BY 
+    total_score DESC
+LIMIT 5;
+/*End of question 3.11*/
+
+/*Question 3.12*/
+with difficulty as (
+select recipes.name as name,recipes.difficulty_level as difficul,chefs_recipes_episode.episode_id as episode,episodes.year_played as year from recipes
+join chefs_recipes_episode on recipes.id=chefs_recipes_episode.recipe_id
+join episodes on chefs_recipes_episode.episode_id=episodes.episode_number
+)
+, difficulty_of_episode as (
+select  avg(difficul) as difficul,episode,year from difficulty
+group by episode,year
+)
+/*End of question 3.12*/
+
+/*Question 3.13*/
+SELECT e.id, e.episode_number, AVG(c.prof_certification) as avg_certification
+FROM Episodes e
+JOIN rates r ON e.id = r.episode_id
+JOIN Chefs c ON r.judge_id = c.id OR r.contestant_id = c.id
+GROUP BY e.id, e.episode_number
+ORDER BY avg_certification ASC
+LIMIT 1;
+/*End of question 3.13*/
+
 
 /*Question 3.14*/
 SELECT themes.name AS "Theme",COUNT(*) AS Participation
