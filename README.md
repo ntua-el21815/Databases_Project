@@ -9,6 +9,11 @@ Please whenever you commit something make clear what you did by naming the commi
 Remember that in order for you to see a change that another member has made you
 have to pull the repo.
 
+To download our project (Three Options): <br>
+1) Download a .zip archive from https://github.com/NicholasAgg/Databases_Project/ (Recommended since changes are disallowed anyways) and extract it into your desired directory.
+2) Download Github Desktop login with your credentials and clone the repo into your desired Folder.
+3) Install Github CLI as described here (https://github.com/cli/cli#installation), then login with your credntials (Command: gh auth login),and then run gh repo clone NicholasAgg/Databases_Project, to clone the repo into your desired directory.
+
 To set up the database: <br>
 0) Make sure you are running mysql version >= 8.0.
 1) Make sure you have python (version 3.10) installed.
