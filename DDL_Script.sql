@@ -450,21 +450,6 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'A recipe can only be used in 3 consecutive episodes';
     END IF;
-    /* Check if a judge has taken part as judge in the 3 previous episodes */
-    IF (
-        SELECT COUNT(*) FROM is_judge
-        WHERE judge_id = NEW.chef_id
-        AND episode_id IN
-        (
-            new.episode_id - 1,
-            new.episode_id - 2,
-            new.episode_id - 3,
-            new.episode_id - 4
-        )
-    ) >=3 THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'A chef can only be a judge in 3 consecutive episodes';
-    END IF;
 END //
 
 
