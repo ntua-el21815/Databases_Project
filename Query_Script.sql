@@ -109,7 +109,7 @@ SELECT chefs.name AS 'Chef Name', chefs.surname AS 'Chef Surname', age(chefs.bir
         SELECT COUNT(*) FROM chef_recipes WHERE chef_recipes.chef_id = chefs.id
     ) AS Recipes
 	FROM chefs 
-    HAVING Age < 30 
+	HAVING Age < 30 
     ORDER BY Recipes DESC;
 /* End of Question 3.3 */
 
@@ -126,7 +126,7 @@ SELECT year_played AS Year,chefs.id AS 'Judge id',chefs.name 'Judge\'s Name',che
     JOIN episodes ON is_judge.episode_id = episodes.id
     GROUP BY chefs.id,episodes.year_played
     HAVING `Episodes` > 3
-    ORDER BY Year,Episodes DESC;
+    ORDER BY Year,`Episodes` DESC;
 /*This query broke because of the constraint of 3 consecutive episodes.WHAT SHOULD WE DO? */
 /*Fixed it by adding some persistent chefs in the Script of random episode Generation.*/
 /* End of Question 3.5 */
@@ -166,7 +166,7 @@ SELECT DISTINCT chefs.id AS "Chef ID",chefs.name AS "Chef's Name",chefs.surname 
 
 /*Question 3.8*/
 SELECT e.episode_number AS 'Episode Number',e.year_played AS 'Year Played', COUNT(kfr.kitchenware_id) AS `Kitchenware Used` 
-    FROM Episodes e /*FORCE INDEX (PRIMARY)*/
+    FROM Episodes e
     JOIN chefs_recipes_episode cre ON e.id = cre.episode_id
     JOIN kitchenware_for_recipe kfr ON cre.recipe_id = kfr.recipe_id
     GROUP BY e.id
@@ -216,18 +216,25 @@ SELECT j.name 'Judge\'s Name', j.surname 'Judge\'s Surname', c.name 'Contestant\
 /*End of question 3.11*/
 
 /*Question 3.12*/
-WITH difficulty AS (
-    SELECT recipes.name AS name, recipes.difficulty_level AS difficul, chefs_recipes_episode.episode_id AS episode, episodes.year_played AS year 
+
+WITH episode_overall_difficulty AS (
+SELECT episodes.year_played AS Year,episodes.episode_number AS episode_num,SUM(recipes.difficulty_level) AS difficulty
     FROM recipes
     JOIN chefs_recipes_episode ON recipes.id = chefs_recipes_episode.recipe_id
-    JOIN episodes ON chefs_recipes_episode.episode_id = episodes.episode_number
+    JOIN episodes ON chefs_recipes_episode.episode_id = episodes.id
+    GROUP BY episodes.id,episodes.year_played
+),
+Max_difficulties AS (
+SELECT Year,MAX(difficulty) AS Max_difficulty
+	FROM episode_overall_difficulty
+	GROUP BY Year
 )
-, 
-difficulty_of_episode AS (
-SELECT AVG(difficul) AS difficul, episode, year 
-	FROM difficulty
-	GROUP BY episode, year
-)
+SELECT episode_overall_difficulty.Year,MIN(episode_num) `Episode Number`,difficulty 'Highest Overall Difficulty on an Episode This Year'
+	FROM episode_overall_difficulty
+    JOIN Max_difficulties ON episode_overall_difficulty.difficulty = Max_difficulties.Max_difficulty AND episode_overall_difficulty.Year = Max_difficulties.Year
+    GROUP BY episode_overall_difficulty.Year;
+#Note that the choice to get the minimum episode number instead of all the episodes that satisfy the criteria is solely because the 
+#exercise asks for one episode (Which episode? and not Which Episodes?)
 /*End of question 3.12*/
 
 /*Question 3.13*/
@@ -235,7 +242,7 @@ SELECT e.episode_number 'Episode Number', e.year_played 'Year'
     FROM Episodes e
     JOIN rates r ON e.id = r.episode_id
     JOIN Chefs c ON r.judge_id = c.id OR r.contestant_id = c.id
-    GROUP BY e.id, e.episode_number
+    GROUP BY e.id
     ORDER BY AVG(c.prof_certification) ASC
     LIMIT 1;
 /*End of question 3.13*/
