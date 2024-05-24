@@ -1,4 +1,4 @@
-/*This creates a chef user with the privileges to SELECT, INSERT, UPDATE and ALTER ON the recipes and chefs tables*/
+/*This creates a chef user with the privileges to SELECT, INSERT and UPDATE ON the recipes and chefs tables*/
 
 CREATE USER 'chef'@'localhost' IDENTIFIED BY 'chef123';/*Change password to your desired password*/
 GRANT SELECT, INSERT, UPDATE ON cookingcontest.recipes TO 'chef'@'localhost';
