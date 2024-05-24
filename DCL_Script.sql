@@ -1,8 +1,8 @@
 /*This creates a chef user with the privileges to SELECT, INSERT, UPDATE and ALTER ON the recipes and chefs tables*/
 
 CREATE USER 'chef'@'localhost' IDENTIFIED BY 'chef123';/*Change password to your desired password*/
-GRANT SELECT, INSERT, UPDATE, ALTER ON cookingcontest.recipes TO 'chef'@'localhost';
-GRANT SELECT, INSERT, UPDATE, ALTER ON cookingcontest.chefs TO 'chef'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON cookingcontest.recipes TO 'chef'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON cookingcontest.chefs TO 'chef'@'localhost';
 FLUSH PRIVILEGES;  -- This ensures that the privileges are refreshed and applied.
 /*You can use SHOW GRANTS command to see the privileges of the user*/
 
