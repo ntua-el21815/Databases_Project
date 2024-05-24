@@ -21,4 +21,8 @@ CREATE USER 'admin'@'localhost' IDENTIFIED BY "admin123";/*Change password to yo
 
 GRANT INSERT, UPDATE, SELECT ON cookingcontest.* TO 'admin'@'localhost';
 GRANT SUPER ON *.* TO 'admin'@'localhost';
+GRANT RELOAD ON *.* TO 'admin'@'localhost';
+GRANT PROCESS ON *.* TO 'admin'@'localhost';/*to process DDL statements with the ALGORITHM = INPLACE clause. */
+GRANT REPLICATION CLIENT ON *.* TO 'admin'@'localhost';/* to retrieve the binary log position(A file containing a record of all statements that attempt to change table data), 
+which is stored with the backup.These statements can be replayed to bring replica servers up to date in a replication scenario, or to bring a database up to date after restoring table data from a backup.*/
 FLUSH PRIVILEGES;  -- This ensures that the privileges are refreshed and applied.
