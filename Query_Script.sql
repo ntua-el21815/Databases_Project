@@ -1,71 +1,5 @@
 USE cookingcontest;
 
-/* Random Queries to validate stuff */
-SELECT * FROM images;
-
-SELECT * FROM is_judge;
-
-SELECT * FROM dietaryinfo;
-
-SELECT * FROM themes;
-
-SELECT * FROM cuisines;
-
-SELECT  * FROM chefs;
-
-SELECT recipes.id,recipes.name AS 'Recipe Name',ingredients.name AS 'Main Ingredient' FROM recipes JOIN requires JOIN ingredients
-	WHERE recipes.id = requires.recipe_id AND requires.ingredient_id = ingredients.id AND requires.main_ingredient = 1;
-    
-SELECT recipes.id,recipes.name,themes.name,themes.descr FROM recipes JOIN recipe_theme JOIN themes WHERE recipes.id = recipe_theme.recipe_id AND recipe_theme.theme_id = themes.id;
-
-SELECT ingredients.name,foodgroups.name FROM ingredients JOIN foodgroups WHERE ingredients.food_group_id= foodgroups.id;
-
-SELECT chefs.name,chefs.surname,cuisines.country_name FROM chefs JOIN specialises_in JOIN cuisines WHERE chefs.id = specialises_in.chef_id AND specialises_in.cuisine_id = cuisines.id;
-
-SELECT *,get_title(prof_certification) certfiication FROM chefs;
-
-SELECT episode_number,year_played,chefs.name,chefs.surname FROM chefs JOIN episodes WHERE chefs.id = episodes.winner_id;
-
-SELECT age(birth_date) AS 'Age' FROM chefs;
-
-SELECT recipes.name,images.image FROM recipes JOIN images WHERE recipes.image_id = images.id OR recipes.image_id IS NULL;
-
-SELECT chefs.name,images.image FROM chefs JOIN images WHERE chefs.image_id = images.id OR chefs.image_id IS NULL;
-
-SELECT themes.name,images.image FROM themes JOIN images WHERE themes.image_id = images.id OR themes.image_id IS NULL;
-
-SELECT foodgroups.name,images.image FROM foodgroups JOIN images WHERE foodgroups.image_id = images.id OR foodgroups.image_id IS NULL;
-
-SELECT episodes.year_played,episodes.episode_number,images.image FROM episodes JOIN images WHERE episodes.image_id = images.id;
-
-SELECT ingredients.name,images.image FROM ingredients JOIN images WHERE ingredients.image_id = images.id OR ingredients.image_id IS NULL;
-
-SELECT * FROM episodes;
-
-SET SQL_SAFE_UPDATES = 0;
-
-SHOW VARIABLES LIKE 'secure_file_priv';
-
-GRANT FILE ON *.* TO 'root'@'localhost';
-
-DELETE FROM Images;
-UPDATE Recipes SET image_id = NULL;
-
-SELECT * FROM chefs_recipes_episode;
-
-SELECT episodes.year_played,episodes.episode_number,cuisines.country_name 
-	FROM episode_cuisines JOIN episodes JOIN cuisines 
-	WHERE episode_cuisines.episode_id = episodes.id AND episode_cuisines.cuisine_id = cuisines.id
-    ORDER BY year_played,episode_number ASC;
-
-/* 3.14 Validation */
-
-select * from themes;
-SELECT * FROM recipe_theme;
-SELECT COUNT(*) FROM chefs_recipes_episode;
-
-/* End of Random Queries */
-
 /* Question 3.1 */
 SELECT AVG(score) AS `Average Score`,chefs.name AS 'Cook Name',chefs.surname AS 'Cook Surname' 
 	FROM rates 
@@ -114,7 +48,9 @@ SELECT chefs.name AS 'Chef Name', chefs.surname AS 'Chef Surname', age(chefs.bir
 /* End of Question 3.3 */
 
 /* Question 3.4 */
-SELECT chefs.id 'ID of Chef',chefs.name 'Chef\'s Name' ,chefs.surname 'Chef\'s Surname' FROM chefs WHERE id NOT IN (SELECT DISTINCT(judge_id) FROM is_judge);
+SELECT chefs.id 'ID of Chef',chefs.name 'Chef\'s Name' ,chefs.surname 'Chef\'s Surname' 
+    FROM chefs 
+    WHERE id NOT IN (SELECT DISTINCT(judge_id) FROM is_judge);
 /* End of Question 3.4 */
 
 /* Question 3.5 */
@@ -127,8 +63,6 @@ SELECT year_played AS Year,chefs.id AS 'Judge id',chefs.name 'Judge\'s Name',che
     GROUP BY chefs.id,episodes.year_played
     HAVING `Episodes` > 3
     ORDER BY Year,`Episodes` DESC;
-/*This query broke because of the constraint of 3 consecutive episodes.WHAT SHOULD WE DO? */
-/*Fixed it by adding some persistent chefs in the Script of random episode Generation.*/
 /* End of Question 3.5 */
 
 /* Question 3.6 */
@@ -176,7 +110,8 @@ SELECT e.episode_number AS 'Episode Number',e.year_played AS 'Year Played', COUN
 
 /*Question 3.9*/
 SELECT episodes.year_played AS "Year",AVG(dietaryinfo.hydrocarbon_content) AS `Average Hydrocarbons`
-	FROM episodes JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id
+	FROM episodes 
+    JOIN chefs_recipes_episode ON episodes.id = chefs_recipes_episode.episode_id
 	JOIN dietaryinfo ON chefs_recipes_episode.recipe_id = dietaryinfo.recipe_id
 	GROUP BY episodes.year_played;
 /*End of question 3.9*/
@@ -243,7 +178,7 @@ SELECT e.episode_number 'Episode Number', e.year_played 'Year'
     JOIN rates r ON e.id = r.episode_id
     JOIN Chefs c ON r.judge_id = c.id OR r.contestant_id = c.id
     GROUP BY e.id
-    ORDER BY AVG(c.prof_certification) ASC
+    ORDER BY SUM(c.prof_certification) ASC
     LIMIT 1;
 /*End of question 3.13*/
 
