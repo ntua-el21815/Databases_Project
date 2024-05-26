@@ -21,6 +21,7 @@ if __name__ == "__main__":
     else:
         episode = last_episode_number[0] + 1
         year = last_year_played[0]
+    print(f"Generating episode {episode} for year {year}")
     mycursor.execute("INSERT INTO Episodes (episode_number,year_played) VALUES (%s, %s)", (episode,year))
     episode_id = mycursor.lastrowid
     print(f"Inserted {year} episode {episode}")
