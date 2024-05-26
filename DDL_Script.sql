@@ -203,7 +203,6 @@ CREATE TABLE Steps (
     CONSTRAINT chk_step_number CHECK (step_number > 0),
     CHECK (step_number > 0),
     step_desc TEXT NOT NULL,
-    image_id INT,
     /* The combination of recipe_id and step_number must be unique
        Obviously one recipe can't have the same step two times. */
     CONSTRAINT chk_step_number UNIQUE (recipe_id, step_number),
