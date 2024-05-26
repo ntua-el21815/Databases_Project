@@ -166,7 +166,8 @@ SELECT Year,MAX(difficulty) AS Max_difficulty
 SELECT episode_overall_difficulty.Year,MIN(episode_num) `Episode Number`,difficulty 'Highest Overall Difficulty on an Episode This Year'
 	FROM episode_overall_difficulty
     JOIN Max_difficulties ON episode_overall_difficulty.difficulty = Max_difficulties.Max_difficulty AND episode_overall_difficulty.Year = Max_difficulties.Year
-    GROUP BY episode_overall_difficulty.Year;
+    GROUP BY episode_overall_difficulty.Year
+    ORDER BY Year;
 #Note that the choice to get the minimum episode number instead of all the episodes that satisfy the criteria is solely because the 
 #exercise asks for one episode (Which episode? and not Which Episodes?)
 /*End of question 3.12*/
@@ -198,7 +199,9 @@ SELECT name AS Name,descr AS Description FROM foodgroups
     (
         SELECT DISTINCT(ingredients.food_group_id) 
         FROM ingredients 
-        JOIN requires ON ingredients.id = requires.ingredient_id
+        JOIN requires ON ingredients.id = requires.ingredient_id #AND main_ingredient = 1
         JOIN chefs_recipes_episode ON requires.recipe_id = chefs_recipes_episode.recipe_id
     );
+#There are two alternatives for this question.If you do not uncomment the commented section you get which food group has not appeared in any of the ingredients. 
+#If you uncomment the commented section you get the food groups that have not appeared in a amin ingredient.
 /* End of question 3.15*/
