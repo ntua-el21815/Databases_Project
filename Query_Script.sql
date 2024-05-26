@@ -67,20 +67,19 @@ SELECT year_played AS Year,chefs.id AS 'Judge id',chefs.name 'Judge\'s Name',che
 
 /* Question 3.6 */
 WITH RecipeTags AS (
-    SELECT r.id AS recipe_id, t.tag_name
-    FROM Recipes r
-    JOIN recipe_tags rt ON r.id = rt.recipe_id
+    SELECT cre.episode_id AS episode_id, rt.recipe_id AS recipe_id, t.tag_name, rt.tag_id
+    FROM recipe_tags rt
     JOIN Tags t ON rt.tag_id = t.id
-    JOIN chefs_recipes_episode cre ON r.id = cre.recipe_id
+    JOIN chefs_recipes_episode cre ON rt.recipe_id = cre.recipe_id
 ), TagPairs AS (
-    SELECT rt1.recipe_id, rt1.tag_name AS tag1, rt2.tag_name AS tag2
+    SELECT rt1.tag_name AS tag1, rt2.tag_name AS tag2, rt1.recipe_id
     FROM RecipeTags rt1
-    JOIN RecipeTags rt2 ON rt1.recipe_id = rt2.recipe_id AND rt1.tag_name < rt2.tag_name /*Warning "<" is used because we don't want duplicate pairs.*/
+    JOIN RecipeTags rt2 ON rt1.recipe_id = rt2.recipe_id AND rt1.tag_name < rt2.tag_name AND rt1.episode_id = rt2.episode_id
 )
-
-SELECT COUNT(recipe_id) AS `Times Shown in the Contest`, tag1 'Tag 1 from Pair', tag2 'Tag 2 from Pair' FROM TagPairs
+SELECT COUNT(*) AS `Times Pair Showed up in Contest`, tag1 AS `Tag 1`, tag2 AS `Tag 2`
+    FROM TagPairs
     GROUP BY tag1, tag2
-    ORDER BY `Times Shown in the Contest` DESC
+    ORDER BY `Times Pair Showed up in Contest` DESC
     LIMIT 3;
 /* End of Question 3.6*/
 
