@@ -111,7 +111,7 @@ CREATE TABLE Episodes (
     winner_id INT,
     year_played YEAR NOT NULL,
     image_id INT,
-    CONSTRAINT CHECK (year_played BETWEEN 2015 AND 2025), /* Change this ASAP 2025 to current year.Make trigger instead*/
+    CONSTRAINT CHECK (year_played >= 2015),
     CONSTRAINT no_two_same_episodes UNIQUE (year_played,episode_number),
     FOREIGN KEY (winner_id) REFERENCES Chefs(id),
     FOREIGN KEY (image_id) REFERENCES Images(id)
