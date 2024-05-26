@@ -111,7 +111,7 @@ CREATE TABLE Episodes (
     winner_id INT,
     year_played YEAR NOT NULL,
     image_id INT,
-    CONSTRAINT CHECK (year_played BETWEEN 2015 AND 2025), /* Change this ASAP 2025 to current year.Make trigger instead*/
+    CONSTRAINT CHECK (year_played >= 2015),
     CONSTRAINT no_two_same_episodes UNIQUE (year_played,episode_number),
     FOREIGN KEY (winner_id) REFERENCES Chefs(id),
     FOREIGN KEY (image_id) REFERENCES Images(id)
@@ -266,17 +266,6 @@ CREATE TABLE recipe_tags (
     FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
     FOREIGN KEY (tag_id) REFERENCES Tags(id)
 );
-
-/* Probably not needed 
-CREATE TABLE episode_recipes (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    episode_id INT NOT NULL,
-    recipe_id INT NOT NULL,
-    CONSTRAINT recipe_chosen_once UNIQUE (episode_id, recipe_id),
-    FOREIGN KEY (episode_id) REFERENCES Episodes(id),
-    FOREIGN KEY (recipe_id) REFERENCES Recipes(id)
-);
-*/
 
 CREATE TABLE requires (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -488,10 +477,15 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'A recipe can only be used in 3 consecutive episodes';
     END IF;
+END //
+
+CREATE TRIGGER `CheckJudgeParticipation` BEFORE INSERT ON `is_judge`
+FOR EACH ROW
+BEGIN
     /* Check if a judge has taken part as judge in the 3 previous episodes */
     IF (
         SELECT COUNT(*) FROM is_judge
-        WHERE judge_id = NEW.chef_id
+        WHERE judge_id = NEW.judge_id
         AND episode_id IN
         (
             new.episode_id - 1,
@@ -501,7 +495,27 @@ BEGIN
         )
     ) > 3 THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'A chef can only be a judge in 3 consecutive episodes';
+        SET MESSAGE_TEXT = 'A judge can only participate in 3 consecutive episodes';
+    END IF;
+END //
+
+CREATE TRIGGER `CheckJudgeParticipationOnUpdate` BEFORE UPDATE ON `is_judge`
+FOR EACH ROW
+BEGIN
+    /* Check if a judge has taken part as judge in the 3 previous episodes */
+    IF (
+        SELECT COUNT(*) FROM is_judge
+        WHERE judge_id = NEW.judge_id
+        AND episode_id IN
+        (
+            new.episode_id - 1,
+            new.episode_id - 2,
+            new.episode_id - 3,
+            new.episode_id - 4
+        )
+    ) > 3 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'A judge can only participate in 3 consecutive episodes';
     END IF;
 END //
 
