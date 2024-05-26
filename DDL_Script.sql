@@ -154,9 +154,7 @@ CREATE TABLE Kitchenware (
 
 CREATE TABLE Meals (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(45) NOT NULL,
-    image_id INT,
-    FOREIGN KEY (image_id) REFERENCES Images(id)
+    name VARCHAR(45) NOT NULL
 );
 
 /* Creating a stored procedure to calculate the calories of a recipe */
@@ -203,12 +201,10 @@ CREATE TABLE Steps (
     CONSTRAINT chk_step_number CHECK (step_number > 0),
     CHECK (step_number > 0),
     step_desc TEXT NOT NULL,
-    image_id INT,
     /* The combination of recipe_id and step_number must be unique
        Obviously one recipe can't have the same step two times. */
     CONSTRAINT chk_step_number UNIQUE (recipe_id, step_number),
-    FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
-    FOREIGN KEY (image_id) REFERENCES Images(id)
+    FOREIGN KEY (recipe_id) REFERENCES Recipes(id)
 );
 
 CREATE TABLE Quantities (
