@@ -11,6 +11,8 @@ SELECT * FROM cuisines;
 
 SELECT  * FROM chefs;
 
+SELECT * FROM episodes;
+
 SELECT recipes.id,recipes.name AS 'Recipe Name',ingredients.name AS 'Main Ingredient' FROM recipes JOIN requires JOIN ingredients
 	WHERE recipes.id = requires.recipe_id AND requires.ingredient_id = ingredients.id AND requires.main_ingredient = 1;
     
@@ -34,7 +36,7 @@ SELECT themes.name,images.image FROM themes JOIN images WHERE themes.image_id = 
 
 SELECT foodgroups.name,images.image FROM foodgroups JOIN images WHERE foodgroups.image_id = images.id OR foodgroups.image_id IS NULL;
 
-SELECT episodes.year_played,episodes.episode_number,images.image FROM episodes JOIN images WHERE episodes.image_id = images.id;
+SELECT episodes.year_played,episodes.episode_number,images.image FROM episodes JOIN images WHERE episodes.image_id = images.id OR episodes.image_id = NULL;
 
 SELECT ingredients.name,images.image FROM ingredients JOIN images WHERE ingredients.image_id = images.id OR ingredients.image_id IS NULL;
 

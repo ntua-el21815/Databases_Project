@@ -69,5 +69,5 @@ if __name__ == "__main__":
         mycursor.execute("INSERT INTO rates (judge_id, contestant_id, episode_id, score) VALUES (%s, %s, %s, %s)", (judges[0][0], contestant[0], episode_id, score_1))
         mycursor.execute("INSERT INTO rates (judge_id, contestant_id, episode_id, score) VALUES (%s, %s, %s, %s)", (judges[1][0], contestant[0], episode_id, score_2))
         mycursor.execute("INSERT INTO rates (judge_id, contestant_id, episode_id, score) VALUES (%s, %s, %s, %s)", (judges[2][0], contestant[0], episode_id, score_3))
-        mydb.commit()
         print(f"Inserted scores for contestant {contestant[0]} in episode {episode_id} by judges {judges[0][0]}, {judges[1][0]}, {judges[2][0]}")
+    mydb.commit()
