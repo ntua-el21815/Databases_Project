@@ -8,7 +8,7 @@ All Query Questions are in File [Questions](Query_Script.sql).
 
 The ER Diagram can be found as an Image [ER Diagram](ER_Cooking_Contest.png)
 
-The Relational Schema can bd found as an Image [Relational Schema](RelationalSchema.png)
+The Relational Schema can be found as an Image [Relational Schema](RelationalSchema.png)
 
 To download our project (Three Options): <br>
 1) Download a .zip archive from https://github.com/NicholasAgg/Databases_Project/ (Recommended since changes are disallowed anyways) and extract it into your desired directory.
